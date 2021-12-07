@@ -20,7 +20,5 @@ class ForecastCollectionViewCell: UICollectionViewCell {
 
         LabelFormatter.shared.setupLabelSizeFont(label: timeLabel)
         LabelFormatter.shared.setupLabelSizeFont(label: tempLabel)
-
-//        print(forecast.weatherDescription)
     }
 }

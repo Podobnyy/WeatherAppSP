@@ -6,7 +6,7 @@
 //
 
 import Foundation
-// TODO: Сheck which variables can be optional
+
 struct CityWeather {
     let name: String
     let weatherDescription: String

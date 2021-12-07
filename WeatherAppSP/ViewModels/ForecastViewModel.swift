@@ -5,7 +5,6 @@
 //  Created by Сергей Александрович on 06.12.2021.
 //
 
-import Foundation
 import UIKit
 
 struct ForecastViewModel {
