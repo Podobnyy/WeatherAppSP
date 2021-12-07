@@ -6,17 +6,17 @@
 //
 
 import Foundation
-
-struct CityWeather { // TODO: Сheck which variables can be optional
+// TODO: Сheck which variables can be optional
+struct CityWeather {
     let name: String
     let weatherDescription: String
     let date: Date
     let temp: Double
     let sunrise: Date
     let sunset: Date
-    
+
     let forecasts: [Forecast]
-    
+
     let humidity: Double
     let windSpeed: Double
     let tempMin: Double

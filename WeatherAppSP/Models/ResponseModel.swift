@@ -6,8 +6,8 @@
 //
 
 import Foundation
-
-struct ResponseModel: Codable { // TODO: Сheck which variables can be optional
+// TODO: Сheck which variables can be optional
+struct ResponseModel: Codable {
     let cod: String
     let message: Int
     let cnt: Int
@@ -17,7 +17,7 @@ struct ResponseModel: Codable { // TODO: Сheck which variables can be optional
 
 // MARK: - List
 struct List: Codable {
-    let dt: Int
+    let dateTime: Int
     let main: Main
     let weather: [Weather]
     let clouds: Clouds
@@ -25,19 +25,40 @@ struct List: Codable {
     let visibility: Int
     let pop: Double
     let sys: Sys
-    let dt_txt: String
+    let dtTxt: String
+
+    enum CodingKeys: String, CodingKey {
+        case main, weather, clouds, wind, visibility, pop, sys
+
+        case dateTime = "dt"
+        case dtTxt = "dt_txt"
+    }
 }
 
 struct Main: Codable {
     let temp: Double
-    let feels_like: Double
-    let temp_min: Double
-    let temp_max: Double
+
+    let feelsLike: Double
+    let tempMin: Double
+    let tempMax: Double
     let pressure: Double
-    let sea_level: Double
-    let grnd_level: Double
+    let seaLevel: Double
+    let grndLevel: Double
     let humidity: Double
-    let temp_kf: Double
+    let tempKf: Double
+
+    enum CodingKeys: String, CodingKey {
+        case temp
+
+        case feelsLike = "feels_like"
+        case tempMin = "temp_min"
+        case tempMax = "temp_max"
+        case pressure = "pressure"
+        case seaLevel = "sea_level"
+        case grndLevel = "grnd_level"
+        case humidity = "humidity"
+        case tempKf = "temp_kf"
+    }
 }
 
 struct Weather: Codable {
