@@ -11,9 +11,19 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.tabBar.tintColor = .white
-        self.tabBar.clipsToBounds = true
-        self.tabBar.layer.borderWidth = 0.5
-        self.tabBar.layer.borderColor = UIColor.lightGray.cgColor
+        tabBar.tintColor = .white
+        tabBar.clipsToBounds = true
+        tabBar.layer.borderWidth = 0.5
+        tabBar.layer.borderColor = UIColor.lightGray.cgColor
+
+        guard let items = self.tabBar.items else { return }
+
+        let tabBarItems = ["Weather", "Settings"]
+
+        for index in 0..<items.count {
+            items[index].title = tabBarItems[index]
+            items[index].image = UIImage(named: tabBarItems[index])
+        }
+
     }
 }

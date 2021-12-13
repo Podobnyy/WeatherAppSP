@@ -51,13 +51,9 @@ class NetworkManager {
                                            forecasts: getForecastsFromResponseModel(responseModel: responseModel),
                                            humidity: responseModel.list[0].main.humidity,
                                            windSpeed: responseModel.list[0].wind.speed,
-
                                            tempMin: responseModel.list[0].main.tempMin,
                                            tempMax: responseModel.list[0].main.tempMax,
                                            feelsLike: responseModel.list[0].main.feelsLike,
-//                                           tempMin: responseModel.list[0].main.temp_min,
-//                                           tempMax: responseModel.list[0].main.temp_max,
-//                                           feelsLike: responseModel.list[0].main.feels_like,
                                            pressure: responseModel.list[0].main.pressure)
         return cityWeather
     }
@@ -71,7 +67,6 @@ class NetworkManager {
                                          weatherDescription: item.weather[0].description)
             result.append(forecast)
         }
-
         return result
     }
 }

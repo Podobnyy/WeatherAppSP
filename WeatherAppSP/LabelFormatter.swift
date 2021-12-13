@@ -5,7 +5,6 @@
 //  Created by Сергей Александрович on 06.12.2021.
 //
 
-import Foundation
 import UIKit
 
 struct LabelFormatter {
@@ -18,6 +17,5 @@ struct LabelFormatter {
     func setupLabelSizeFont(label: UILabel) {
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.3
-// TODO: Ask Max: for Height!
     }
 }

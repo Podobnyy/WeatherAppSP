@@ -6,7 +6,7 @@
 //
 
 import Foundation
-// TODO: Сheck which variables can be optional
+
 struct ResponseModel: Codable {
     let cod: String
     let message: Int

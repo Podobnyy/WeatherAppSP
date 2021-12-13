@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WeatherViewController: UIViewController {
+class WeatherViewController: BaseViewController {
 
     @IBOutlet private weak var upperStackView: UIStackView!
     @IBOutlet private weak var nameLabel: UILabel!
@@ -20,6 +20,7 @@ class WeatherViewController: UIViewController {
 
     @IBOutlet private weak var forecastCollectionView: UICollectionView!
 
+    @IBOutlet private weak var detailView: UIView!
     @IBOutlet private weak var detailStackView: UIStackView!
 
     private var upperActivityIndicator = UIActivityIndicatorView()
@@ -34,21 +35,15 @@ class WeatherViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        startViewScreen()
+        startViewScreen(title: "Weather")
         setupForecastCollectionView()
+        addActivityIndicators()
         loadData()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        addActivityIndicators()
-    }
-
     // MARK: - Start view screen
-    private func startViewScreen() {
-        self.title = "Weather"
-        self.tabBarItem.image = UIImage(named: "sun.max.circle")
+    override func startViewScreen(title: String) {
+        super.startViewScreen(title: title)
         clearLabel()
     }
 
@@ -66,26 +61,7 @@ class WeatherViewController: UIViewController {
         forecastCollectionView.dataSource = self
         forecastCollectionView.delegate = self
 
-        forecastCollectionView.register(UINib(nibName: "ForecastCollectionViewCell", bundle: nil),
-                                        forCellWithReuseIdentifier: "ForecastCollectionViewCell")
-    }
-
-    // MARK: - NetworkManager
-    private func loadData() {
-        NetworkManager.shared.callCityWeatherRequest(cityNameString: "Kharkov") { [weak self] (cityWeather) in
-            guard let cityWeather = cityWeather else { return }
-
-            DispatchQueue.main.async {
-                self?.setupUpperStackView(cityWeather: cityWeather)
-
-                self?.forecastDataSource = cityWeather.forecasts
-                self?.forecastCollectionView.reloadData()
-
-                self?.setupDetailStackView(cityWeather: cityWeather)
-
-                self?.stopAllActivityIndicators()
-            }
-        }
+        forecastCollectionView.register(cell: ForecastCollectionViewCell.self)
     }
 
     // MARK: - ActivityIndicators
@@ -98,12 +74,6 @@ class WeatherViewController: UIViewController {
 
         detailStackView.addSubview(lowerActivityIndicator)
         setupActivityIndicator(activityIndicator: lowerActivityIndicator)
-    }
-
-    private func stopAllActivityIndicators() {
-        [upperActivityIndicator, middleActivityIndicator, lowerActivityIndicator].forEach {
-            stopActivityIndicator(activityIndicator: $0)
-        }
     }
 
     private func setupActivityIndicator(activityIndicator: UIActivityIndicatorView) {
@@ -128,7 +98,6 @@ class WeatherViewController: UIViewController {
         NSLayoutConstraint.activate([xConstraint, yConstraint])
 
         activityIndicator.hidesWhenStopped = true
-        startActivityIndicator(activityIndicator: activityIndicator)
     }
 
     private func startActivityIndicator(activityIndicator: UIActivityIndicatorView) {
@@ -138,6 +107,38 @@ class WeatherViewController: UIViewController {
 
     private func stopActivityIndicator(activityIndicator: UIActivityIndicatorView) {
         activityIndicator.isHidden = true
+    }
+
+    private func startAllActivityIndicators() {
+        [upperActivityIndicator, middleActivityIndicator, lowerActivityIndicator].forEach {
+            startActivityIndicator(activityIndicator: $0)
+        }
+    }
+
+    private func stopAllActivityIndicators() {
+        [upperActivityIndicator, middleActivityIndicator, lowerActivityIndicator].forEach {
+            stopActivityIndicator(activityIndicator: $0)
+        }
+    }
+
+    // MARK: - NetworkManager
+    private func loadData() {
+        startAllActivityIndicators()
+
+        NetworkManager.shared.callCityWeatherRequest(cityNameString: "Kharkov") { [weak self] (cityWeather) in
+            guard let cityWeather = cityWeather else { return }
+
+            DispatchQueue.main.async {
+                self?.setupUpperStackView(cityWeather: cityWeather)
+
+                self?.forecastDataSource = cityWeather.forecasts
+                self?.forecastCollectionView.reloadData()
+
+                self?.setupDetailStackView(cityWeather: cityWeather)
+
+                self?.stopAllActivityIndicators()
+            }
+        }
     }
 
     // MARK: - func for TopStackView
@@ -193,7 +194,7 @@ class WeatherViewController: UIViewController {
         detailStackView.addArrangedSubview(stackView1)
         detailStackView.addArrangedSubview(stackView2)
         detailStackView.addArrangedSubview(stackView3)
-  //      detailStackView.isHidden = true
+//        detailView.isHidden = true
     }
 
     private func getCustomStackViewForDetailView() -> UIStackView {
@@ -205,15 +206,16 @@ class WeatherViewController: UIViewController {
     }
 
     private func getWeatherDetailView(weatherDetailModel: WeatherDetailModel) -> WeatherDetailView {
-        let view = WeatherDetailView.fromNib(named: "WeatherDetailView")
-        view.setup(weatherDetailModel: weatherDetailModel)
+        let detailView = WeatherDetailView.fromNib(named: String(describing: WeatherDetailView.self))
+        detailView.setup(weatherDetailModel: weatherDetailModel)
 
-        let heightForView = self.view.frame.size.height / aspectRatioToView
-        view.heightAnchor.constraint(equalToConstant: heightForView).isActive = true
-        return view
+        let heightForView = view.frame.size.height / aspectRatioToView
+        detailView.heightAnchor.constraint(equalToConstant: heightForView).isActive = true
+        return detailView
     }
 }
 
+// MARK: - Extensions
 extension WeatherViewController: UICollectionViewDataSource {
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -242,30 +244,5 @@ extension WeatherViewController: UICollectionViewDelegateFlowLayout {
         let aspectRatio: CGFloat = 150 / 250
         let width = height * aspectRatio
         return CGSize(width: width, height: height)
-    }
-}
-
-// MARK: - Generics for UICollectionViewCell
-protocol ReusableView {
-
-    static var reuseIdentifier: String { get }
-}
-
-extension ReusableView {
-
-    static var reuseIdentifier: String {
-        return String(describing: self)
-    }
-}
-
-extension UICollectionViewCell: ReusableView {}
-
-extension UICollectionView {
-
-    func dequeueReusableCell<T: UICollectionViewCell>(for indexPath: IndexPath) -> T {
-        guard let cell = dequeueReusableCell(withReuseIdentifier: T.reuseIdentifier, for: indexPath) as? T else {
-                    fatalError("Unable to Dequeue Reusable Table View Cell")
-        }
-        return cell
     }
 }
