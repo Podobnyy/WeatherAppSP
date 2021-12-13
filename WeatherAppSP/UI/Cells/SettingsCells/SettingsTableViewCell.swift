@@ -7,13 +7,21 @@
 
 import UIKit
 
+protocol SettingsTableViewCellDelegate: AnyObject {
+    func settingsTableViewCell(cell: SettingsTableViewCell, value: Int)
+}
+
 class SettingsTableViewCell: UITableViewCell {
+
+    weak var delegate: SettingsTableViewCellDelegate?
 
     @IBOutlet private weak var nameParameterLabel: UILabel!
     @IBOutlet private weak var valueSegmentedControl: UISegmentedControl!
 
+    // MARK: - funcs
     func setup(settingModel: SettingsModel) {
         nameParameterLabel.text = settingModel.parameter
+        LabelFormatter.shared.setupLabelSizeFont(label: nameParameterLabel)
 
         for index in 0..<settingModel.values.count {
             valueSegmentedControl.setAction(UIAction.init(title: settingModel.values[index],
@@ -25,7 +33,11 @@ class SettingsTableViewCell: UITableViewCell {
                                                           handler: { _ in }),
                                             forSegmentAt: index)
         }
+        valueSegmentedControl.selectedSegmentIndex = settingModel.selectedValue
+    }
 
-        LabelFormatter.shared.setupLabelSizeFont(label: nameParameterLabel)
+    // MARK: - IBActions
+    @IBAction func changedValueSegmentedControl(_ sender: UISegmentedControl) {
+        delegate?.settingsTableViewCell(cell: self, value: sender.selectedSegmentIndex)
     }
 }

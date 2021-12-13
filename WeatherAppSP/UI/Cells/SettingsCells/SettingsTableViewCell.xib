@@ -33,6 +33,9 @@
                             <segment title="First"/>
                             <segment title="Second"/>
                         </segments>
+                        <connections>
+                            <action selector="changedValueSegmentedControl:" destination="KGk-i7-Jjw" eventType="valueChanged" id="7NQ-Eg-dBw"/>
+                        </connections>
                     </segmentedControl>
                 </subviews>
                 <constraints>

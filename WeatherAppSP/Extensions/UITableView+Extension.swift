@@ -30,4 +30,14 @@ extension UITableView {
         }
         return cell
     }
+
+    // MARK: - register
+    private func reuseIndentifier<T>(for type: T.Type) -> String {
+        return String(describing: type)
+    }
+
+    public func register<T: UITableViewCell>(cell: T.Type) {
+        register(UINib(nibName: reuseIndentifier(for: cell), bundle: nil),
+                 forCellReuseIdentifier: reuseIndentifier(for: cell))
+    }
 }

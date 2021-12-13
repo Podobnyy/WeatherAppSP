@@ -20,6 +20,7 @@ class WeatherViewController: BaseViewController {
 
     @IBOutlet private weak var forecastCollectionView: UICollectionView!
 
+    @IBOutlet private weak var detailView: UIView!
     @IBOutlet private weak var detailStackView: UIStackView!
 
     private var upperActivityIndicator = UIActivityIndicatorView()
@@ -60,8 +61,7 @@ class WeatherViewController: BaseViewController {
         forecastCollectionView.dataSource = self
         forecastCollectionView.delegate = self
 
-        forecastCollectionView.register(UINib(nibName: "ForecastCollectionViewCell", bundle: nil),
-                                        forCellWithReuseIdentifier: "ForecastCollectionViewCell")
+        forecastCollectionView.register(cell: ForecastCollectionViewCell.self)
     }
 
     // MARK: - ActivityIndicators
@@ -194,7 +194,7 @@ class WeatherViewController: BaseViewController {
         detailStackView.addArrangedSubview(stackView1)
         detailStackView.addArrangedSubview(stackView2)
         detailStackView.addArrangedSubview(stackView3)
-  //      detailStackView.isHidden = true
+//        detailView.isHidden = true
     }
 
     private func getCustomStackViewForDetailView() -> UIStackView {
@@ -206,12 +206,12 @@ class WeatherViewController: BaseViewController {
     }
 
     private func getWeatherDetailView(weatherDetailModel: WeatherDetailModel) -> WeatherDetailView {
-        let view = WeatherDetailView.fromNib(named: "WeatherDetailView")
-        view.setup(weatherDetailModel: weatherDetailModel)
+        let detailView = WeatherDetailView.fromNib(named: String(describing: WeatherDetailView.self))
+        detailView.setup(weatherDetailModel: weatherDetailModel)
 
         let heightForView = view.frame.size.height / aspectRatioToView
-        view.heightAnchor.constraint(equalToConstant: heightForView).isActive = true
-        return view
+        detailView.heightAnchor.constraint(equalToConstant: heightForView).isActive = true
+        return detailView
     }
 }
 

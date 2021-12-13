@@ -30,4 +30,14 @@ extension UICollectionView {
         }
         return cell
     }
+
+    // MARK: - register
+    private func reuseIndentifier<T>(for type: T.Type) -> String {
+        return String(describing: type)
+    }
+
+    public func register<T: UICollectionViewCell>(cell: T.Type) {
+        register(UINib(nibName: reuseIndentifier(for: cell), bundle: nil),
+                 forCellWithReuseIdentifier: reuseIndentifier(for: cell))
+    }
 }
