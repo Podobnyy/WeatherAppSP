@@ -65,7 +65,7 @@ class SettingsViewController: BaseViewController {
         tableView.dataSource = self
         tableView.delegate = self
 
-       tableView.register(cell: SettingsTableViewCell.self)
+        tableView.register(cell: SettingsTableViewCell.self)
         tableView.register(cell: SettingsDetailsTableViewCell.self)
     }
 }
@@ -107,8 +107,26 @@ extension SettingsViewController: UITableViewDelegate {
         let aspectRatio: CGFloat = 414 / 80
         return width / aspectRatio
     }
+
+    // MARK: - Navigation
+    // TODO: Ask Max: Where put
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+// TODO: Ask Max: Cell .xib / class
+        guard (tableViewDataSource[indexPath.section].first as? SettingsDetailsModel) != nil else { return }
+
+        let weatherDetailStoryboard =
+            UIStoryboard.init(name: String(describing: WeatherDetailViewController.self), bundle: nil)
+        let weatherDetailViewController =
+            weatherDetailStoryboard.instantiateViewController(withIdentifier:
+                                                                String(describing: WeatherDetailViewController.self))
+        self.navigationController?.pushViewController(weatherDetailViewController, animated: true)
+//      OR  self.show(weatherDetailViewController, sender: nil)
+
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }
 
+// MARK: - SettingsTableViewCellDelegate
 extension SettingsViewController: SettingsTableViewCellDelegate {
 
     func settingsTableViewCell(cell: SettingsTableViewCell, value: Int) {

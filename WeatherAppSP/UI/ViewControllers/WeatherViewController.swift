@@ -170,19 +170,19 @@ class WeatherViewController: BaseViewController {
         let feelsLikeItem = WeatherDetailItem.init(name: "Feels Like", value: cityWeather.feelsLike)
         let pressureItem = WeatherDetailItem.init(name: "Pressure", value: cityWeather.pressure)
 
-        let humidityModel = WeatherDetailModel.init(weatherDetailItem: humidityItem)
-        let windSpeedModel = WeatherDetailModel.init(weatherDetailItem: windSpeedItem)
-        let tempMinModel = WeatherDetailModel.init(weatherDetailItem: tempMinItem)
-        let tempMaxModel = WeatherDetailModel.init(weatherDetailItem: tempMaxItem)
-        let feelsLikeModel = WeatherDetailModel.init(weatherDetailItem: feelsLikeItem)
-        let pressureModel = WeatherDetailModel.init(weatherDetailItem: pressureItem)
+        let humidityModel = WeatherDetailViewModel.init(weatherDetailItem: humidityItem)
+        let windSpeedModel = WeatherDetailViewModel.init(weatherDetailItem: windSpeedItem)
+        let tempMinModel = WeatherDetailViewModel.init(weatherDetailItem: tempMinItem)
+        let tempMaxModel = WeatherDetailViewModel.init(weatherDetailItem: tempMaxItem)
+        let feelsLikeModel = WeatherDetailViewModel.init(weatherDetailItem: feelsLikeItem)
+        let pressureModel = WeatherDetailViewModel.init(weatherDetailItem: pressureItem)
 
-        let view1 = getWeatherDetailView(weatherDetailModel: humidityModel)
-        let view2 = getWeatherDetailView(weatherDetailModel: windSpeedModel)
-        let view3 = getWeatherDetailView(weatherDetailModel: tempMinModel)
-        let view4 = getWeatherDetailView(weatherDetailModel: tempMaxModel)
-        let view5 = getWeatherDetailView(weatherDetailModel: feelsLikeModel)
-        let view6 = getWeatherDetailView(weatherDetailModel: pressureModel)
+        let view1 = getWeatherDetailView(weatherDetailViewModel: humidityModel)
+        let view2 = getWeatherDetailView(weatherDetailViewModel: windSpeedModel)
+        let view3 = getWeatherDetailView(weatherDetailViewModel: tempMinModel)
+        let view4 = getWeatherDetailView(weatherDetailViewModel: tempMaxModel)
+        let view5 = getWeatherDetailView(weatherDetailViewModel: feelsLikeModel)
+        let view6 = getWeatherDetailView(weatherDetailViewModel: pressureModel)
 
         stackView1.addArrangedSubview(view1)
         stackView1.addArrangedSubview(view2)
@@ -205,9 +205,9 @@ class WeatherViewController: BaseViewController {
         return stackView
     }
 
-    private func getWeatherDetailView(weatherDetailModel: WeatherDetailModel) -> WeatherDetailView {
+    private func getWeatherDetailView(weatherDetailViewModel: WeatherDetailViewModel) -> WeatherDetailView {
         let detailView = WeatherDetailView.fromNib(named: String(describing: WeatherDetailView.self))
-        detailView.setup(weatherDetailModel: weatherDetailModel)
+        detailView.setup(weatherDetailViewModel: weatherDetailViewModel)
 
         let heightForView = view.frame.size.height / aspectRatioToView
         detailView.heightAnchor.constraint(equalToConstant: heightForView).isActive = true

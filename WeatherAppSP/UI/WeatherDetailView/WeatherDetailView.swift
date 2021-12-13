@@ -13,10 +13,10 @@ class WeatherDetailView: UIView {
     @IBOutlet private weak var valueLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
 
-    func setup(weatherDetailModel: WeatherDetailModel) {
-        nameLabel.text = weatherDetailModel.name
-        valueLabel.text = weatherDetailModel.value
-        imageView.image = weatherDetailModel.image
+    func setup(weatherDetailViewModel: WeatherDetailViewModel) {
+        nameLabel.text = weatherDetailViewModel.name
+        valueLabel.text = weatherDetailViewModel.value
+        imageView.image = weatherDetailViewModel.image
 
         LabelFormatter.shared.setupLabelSizeFont(label: nameLabel)
         LabelFormatter.shared.setupLabelSizeFont(label: valueLabel)

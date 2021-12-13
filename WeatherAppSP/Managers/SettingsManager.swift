@@ -19,6 +19,11 @@ enum Distance: String, CaseIterable {
     case kilometre = "km", mile = "mile"
 }
 
+enum Details: String, CaseIterable {
+    case humidity = "Humidity", windSpeed = "Wind Speed", minTemp = "Min Temp",
+         maxTemp = "Max Temp", feelsLike = "Feels Like", pressure = "Pressure"
+}
+
 class SettingsManager {
 
     static let shared = SettingsManager()
@@ -28,6 +33,13 @@ class SettingsManager {
     private var valueHour = Hour.twentyFour
     private var valueUnit = Unit.celsius
     private var valueDistance = Distance.kilometre
+
+    private var humidityDetails = WeatherDetailsModel(nameDetailParameter: Details.humidity.rawValue, isOn: true)
+    private var windSpeedDetails = WeatherDetailsModel(nameDetailParameter: Details.windSpeed.rawValue, isOn: true)
+    private var minTempDetails = WeatherDetailsModel(nameDetailParameter: Details.minTemp.rawValue, isOn: true)
+    private var maxTempDetails = WeatherDetailsModel(nameDetailParameter: Details.maxTemp.rawValue, isOn: true)
+    private var feelsLikeDetails = WeatherDetailsModel(nameDetailParameter: Details.feelsLike.rawValue, isOn: true)
+    private var pressureDetails = WeatherDetailsModel(nameDetailParameter: Details.pressure.rawValue, isOn: true)
 
     // MARK: - funcs
     func setSettings(parameter: Any, value: Int) {
@@ -60,5 +72,17 @@ class SettingsManager {
 
     func getValueDistance() -> Distance {
         return valueDistance
+    }
+
+    // MARK: - Get Details funcs
+    func getWeatherDetails(nameDetailParameter: Details) -> WeatherDetailsModel {
+        switch nameDetailParameter {
+        case .humidity: return humidityDetails
+        case .windSpeed: return windSpeedDetails
+        case .minTemp: return minTempDetails
+        case .maxTemp: return maxTempDetails
+        case .feelsLike: return feelsLikeDetails
+        case .pressure: return pressureDetails
+        }
     }
 }
