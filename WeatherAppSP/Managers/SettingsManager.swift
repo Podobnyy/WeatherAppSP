@@ -8,20 +8,18 @@
 import Foundation
 
 enum Hour: String, CaseIterable {
-    case twelve = "12", twentyFour = "24"
+    case twelve = "12"
+    case twentyFour = "24"
 }
 
 enum Unit: String, CaseIterable {
-    case celsius = "°C", fahrenheit = "°F"
+    case celsius = "°C"
+    case fahrenheit = "°F"
 }
 
 enum Distance: String, CaseIterable {
-    case kilometre = "km", mile = "mile"
-}
-
-enum Details: String, CaseIterable {
-    case humidity = "Humidity", windSpeed = "Wind Speed", minTemp = "Min Temp",
-         maxTemp = "Max Temp", feelsLike = "Feels Like", pressure = "Pressure"
+    case kilometre = "km"
+    case mile = "mile"
 }
 
 class SettingsManager {
@@ -34,34 +32,14 @@ class SettingsManager {
     private var valueUnit = Unit.celsius
     private var valueDistance = Distance.kilometre
 
-    private var humidityDetails = WeatherDetailsModel(nameDetailParameter: Details.humidity.rawValue, isOn: true)
-    private var windSpeedDetails = WeatherDetailsModel(nameDetailParameter: Details.windSpeed.rawValue, isOn: true)
-    private var minTempDetails = WeatherDetailsModel(nameDetailParameter: Details.minTemp.rawValue, isOn: true)
-    private var maxTempDetails = WeatherDetailsModel(nameDetailParameter: Details.maxTemp.rawValue, isOn: true)
-    private var feelsLikeDetails = WeatherDetailsModel(nameDetailParameter: Details.feelsLike.rawValue, isOn: true)
-    private var pressureDetails = WeatherDetailsModel(nameDetailParameter: Details.pressure.rawValue, isOn: true)
+    private var settingDetails = [SettingDetailsModel(detailParameter: Detail.humidity, isOn: true),
+                                  SettingDetailsModel(detailParameter: Detail.windSpeed, isOn: true),
+                                  SettingDetailsModel(detailParameter: Detail.minTemp, isOn: true),
+                                  SettingDetailsModel(detailParameter: Detail.maxTemp, isOn: true),
+                                  SettingDetailsModel(detailParameter: Detail.feelsLike, isOn: true),
+                                  SettingDetailsModel(detailParameter: Detail.pressure, isOn: true)]
 
-    // MARK: - funcs
-    func setSettings(parameter: Any, value: Int) {
-        switch parameter {
-        case is Hour.Type:
-            if value <= (Hour.allCases.count - 1) {
-                valueHour = Hour.init(rawValue: Hour.allCases[value].rawValue)!
-            }
-        case is Unit.Type:
-            if value <= (Unit.allCases.count - 1) {
-                valueUnit = Unit.init(rawValue: Unit.allCases[value].rawValue)!
-            }
-        case is Distance.Type:
-            if value <= (Distance.allCases.count - 1) {
-                valueDistance = Distance.init(rawValue: Distance.allCases[value].rawValue)!
-            }
-        default:
-            break
-        }
-    }
-
-    // MARK: - Get funcs
+    // MARK: - GET parameters funcs
     func getValueHour() -> Hour {
         return valueHour
     }
@@ -74,15 +52,26 @@ class SettingsManager {
         return valueDistance
     }
 
-    // MARK: - Get Details funcs
-    func getWeatherDetails(nameDetailParameter: Details) -> WeatherDetailsModel {
-        switch nameDetailParameter {
-        case .humidity: return humidityDetails
-        case .windSpeed: return windSpeedDetails
-        case .minTemp: return minTempDetails
-        case .maxTemp: return maxTempDetails
-        case .feelsLike: return feelsLikeDetails
-        case .pressure: return pressureDetails
-        }
+    // MARK: - SET parameters funcs
+    func setValueHour(newValue: Hour) {
+        valueHour = newValue
+    }
+
+    func setValueUnit(newValue: Unit) {
+        valueUnit = newValue
+    }
+
+    func setValueDistance(newValue: Distance) {
+        valueDistance = newValue
+    }
+
+    // MARK: - GET details funcs
+    func getSettingDetails() -> [SettingDetailsModel] {
+        return settingDetails
+    }
+
+    // MARK: - SET details funcs
+    func setSettingDetails(newSettingDetails: [SettingDetailsModel]) {
+        settingDetails = newSettingDetails
     }
 }
