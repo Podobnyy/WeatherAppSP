@@ -1,5 +1,5 @@
 //
-//  WeatherDetailModel.swift
+//  WeatherDetailViewModel.swift
 //  WeatherAppSP
 //
 //  Created by Сергей Александрович on 06.12.2021.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct WeatherDetailModel {
+struct WeatherDetailViewModel {
 
     let name: String
     let value: String

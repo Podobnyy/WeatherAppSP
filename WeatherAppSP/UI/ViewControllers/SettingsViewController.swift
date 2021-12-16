@@ -9,13 +9,24 @@ import UIKit
 
 class SettingsViewController: BaseViewController {
 
+    enum Section {
+        case parameters
+        case details
+    }
+
+    enum Parameter {
+        case hour
+        case unit
+        case distance
+    }
+
     @IBOutlet private weak var tableView: UITableView!
 
     private var parametersDataSource = [SettingsModel]()
     private let weatherDetailsDataSource = [SettingsDetailsModel.init()]
-    private var tableViewDataSource = [[Any]]()
+    private var tableViewDataSource: [Section] = [.parameters, .details]
 
-    private let parametersArray: [Any] = [Hour.self, Unit.self, Distance.self]
+    private let parametersArray: [Parameter] = [.hour, .unit, .distance]
     private let hourArray = Hour.allCases
     private let unitArray = Unit.allCases
     private let distanceArray = Distance.allCases
@@ -32,40 +43,39 @@ class SettingsViewController: BaseViewController {
 
     // MARK: - SettingsModels
     private func setupParametersDataSource() {
-        for parameter in parametersArray {
+        parametersArray.forEach { parameter in
             var parameterString = ""
             var values = [String]()
             var selectedValue = 0
 
             switch parameter {
-            case is Hour.Type:
+            case .hour:
                 parameterString = String(describing: Hour.self)
                 values = hourArray.map { $0.rawValue }
                 selectedValue = hourArray.firstIndex(where: { $0 == settingsManager.getValueHour() }) ?? 0
-            case is Unit.Type:
+            case .unit:
                 parameterString = String(describing: Unit.self)
                 values = unitArray.map { $0.rawValue }
                 selectedValue = unitArray.firstIndex(where: { $0 == settingsManager.getValueUnit() }) ?? 0
-            case is Distance.Type:
+            case .distance:
                 parameterString = String(describing: Distance.self)
                 values = distanceArray.map { $0.rawValue }
                 selectedValue = distanceArray.firstIndex(where: { $0 == settingsManager.getValueDistance() }) ?? 0
-            default:
-                continue
             }
 
-            let settingsModel = SettingsModel(parameter: parameterString, values: values, selectedValue: selectedValue)
+            let settingsModel = SettingsModel(parameter: parameterString,
+                                              values: values,
+                                              selectedValue: selectedValue)
             parametersDataSource.append(settingsModel)
         }
     }
 
     // MARK: - TableView
     private func setupTableView() {
-        tableViewDataSource = [parametersDataSource, weatherDetailsDataSource]
         tableView.dataSource = self
         tableView.delegate = self
 
-       tableView.register(cell: SettingsTableViewCell.self)
+        tableView.register(cell: SettingsTableViewCell.self)
         tableView.register(cell: SettingsDetailsTableViewCell.self)
     }
 }
@@ -78,25 +88,24 @@ extension SettingsViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableViewDataSource[section].count
+        switch tableViewDataSource[section] {
+        case .details: return weatherDetailsDataSource.count
+        case .parameters: return parametersDataSource.count
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        switch tableViewDataSource[indexPath.section].first {
-        case is SettingsModel:
+        switch tableViewDataSource[indexPath.section] {
+        case .parameters:
             let cell: SettingsTableViewCell = tableView.dequeueReusableCell(for: indexPath)
             cell.setup(settingModel: parametersDataSource[indexPath.row])
             cell.delegate = self
             return cell
-        case is SettingsDetailsModel:
+        case .details:
             let cell: SettingsDetailsTableViewCell = tableView.dequeueReusableCell(for: indexPath)
             cell.setup(settingsDetailsModel: weatherDetailsDataSource[indexPath.row])
             return cell
-        default:
-            break
         }
-        return UITableViewCell()
     }
 }
 
@@ -107,13 +116,42 @@ extension SettingsViewController: UITableViewDelegate {
         let aspectRatio: CGFloat = 414 / 80
         return width / aspectRatio
     }
+
+    // MARK: - Navigation
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch tableViewDataSource[indexPath.section] {
+        case .parameters:
+            break
+        case .details:
+            let settingDetailStoryboard =
+                UIStoryboard.init(name: String(describing: SettingDetailsViewController.self), bundle: nil)
+            let settingDetailViewController = settingDetailStoryboard.instantiateViewController(withIdentifier:
+                                                                String(describing: SettingDetailsViewController.self))
+
+            self.navigationController?.pushViewController(settingDetailViewController, animated: true)
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+    }
 }
 
+// MARK: - SettingsTableViewCellDelegate
 extension SettingsViewController: SettingsTableViewCellDelegate {
 
-    func settingsTableViewCell(cell: SettingsTableViewCell, value: Int) {
+    func settingsTableViewCell(cell: SettingsTableViewCell, selectedValue: Int) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
+
         let parameter = parametersArray[indexPath.row]
-        SettingsManager.shared.setSettings(parameter: parameter, value: value)
+
+        switch parameter {
+        case .hour:
+            guard let newValue = Hour.init(rawValue: Hour.allCases[selectedValue].rawValue) else { return }
+            settingsManager.setValueHour(newValue: newValue)
+        case .unit:
+            guard let newValue = Unit.init(rawValue: Unit.allCases[selectedValue].rawValue) else { return }
+            settingsManager.setValueUnit(newValue: newValue)
+        case .distance:
+            guard let newValue = Distance.init(rawValue: Distance.allCases[selectedValue].rawValue) else { return }
+            settingsManager.setValueDistance(newValue: newValue)
+        }
     }
 }

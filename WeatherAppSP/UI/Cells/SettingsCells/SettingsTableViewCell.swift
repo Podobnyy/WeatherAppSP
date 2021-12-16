@@ -8,7 +8,7 @@
 import UIKit
 
 protocol SettingsTableViewCellDelegate: AnyObject {
-    func settingsTableViewCell(cell: SettingsTableViewCell, value: Int)
+    func settingsTableViewCell(cell: SettingsTableViewCell, selectedValue: Int)
 }
 
 class SettingsTableViewCell: UITableViewCell {
@@ -23,21 +23,21 @@ class SettingsTableViewCell: UITableViewCell {
         nameParameterLabel.text = settingModel.parameter
         LabelFormatter.shared.setupLabelSizeFont(label: nameParameterLabel)
 
-        for index in 0..<settingModel.values.count {
-            valueSegmentedControl.setAction(UIAction.init(title: settingModel.values[index],
+        settingModel.values.enumerated().forEach {
+            valueSegmentedControl.setAction(UIAction.init(title: $1,
                                                           image: nil,
                                                           identifier: nil,
                                                           discoverabilityTitle: nil,
                                                           attributes: UIMenuElement.Attributes.destructive,
                                                           state: UIMenuElement.State.mixed,
                                                           handler: { _ in }),
-                                            forSegmentAt: index)
+                                            forSegmentAt: $0)
         }
         valueSegmentedControl.selectedSegmentIndex = settingModel.selectedValue
     }
 
     // MARK: - IBActions
     @IBAction func changedValueSegmentedControl(_ sender: UISegmentedControl) {
-        delegate?.settingsTableViewCell(cell: self, value: sender.selectedSegmentIndex)
+        delegate?.settingsTableViewCell(cell: self, selectedValue: sender.selectedSegmentIndex)
     }
 }
