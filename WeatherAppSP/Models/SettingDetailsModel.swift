@@ -16,7 +16,24 @@ enum Detail: String, CaseIterable {
     case pressure = "Pressure"
 }
 
-struct SettingDetailsModel {
+class SettingDetailsModel: NSObject, NSCoding {
     let detailParameter: Detail
     var isOn: Bool
+
+    init(detailParameter: Detail, isOn: Bool) {
+        self.detailParameter = detailParameter
+        self.isOn = isOn
+    }
+
+    // MARK: - NSCoding
+    func encode(with coder: NSCoder) {
+        coder.encode(detailParameter.rawValue, forKey: "detailParameter")
+        coder.encode(isOn, forKey: "isOn")
+    }
+
+    required init?(coder: NSCoder) {
+        detailParameter = Detail(rawValue: (coder.decodeObject(forKey: "detailParameter")
+                                            as? String ?? "")) ?? Detail.humidity
+        isOn = Bool(coder.decodeBool(forKey: "isOn"))
+    }
 }

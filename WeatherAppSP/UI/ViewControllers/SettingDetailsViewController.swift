@@ -75,6 +75,7 @@ extension SettingDetailsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: SettingDetailTableViewCell = tableView.dequeueReusableCell(for: indexPath)
         cell.setup(settingDetailsModel: tableViewDataSource[indexPath.row])
+        cell.delegate = self
         return cell
     }
 
@@ -108,5 +109,18 @@ extension SettingDetailsViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
         return false
+    }
+}
+
+extension SettingDetailsViewController: SettingDetailTableViewCellDelegate {
+    func settingDetailTableViewCell(cell: SettingDetailTableViewCell, selectionSwitch: Bool) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+
+        // TODO: Ask Max: change sent one? How mute UISwitch?
+        let settingDetailsModel: SettingDetailsModel = tableViewDataSource[indexPath.row]
+        settingDetailsModel.isOn = selectionSwitch
+        tableViewDataSource[indexPath.row] = settingDetailsModel
+
+        settingsManager.setSettingDetails(newSettingDetails: tableViewDataSource)
     }
 }

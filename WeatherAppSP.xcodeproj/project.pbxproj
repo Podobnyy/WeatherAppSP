@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0560AC10D3323CA7F336CF5D /* Pods_WeatherAppSP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0B09C6836BC7C432A8AD81A /* Pods_WeatherAppSP.framework */; };
+		8018E2D4276A21B100E623E4 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8018E2D3276A21B100E623E4 /* UserSettings.swift */; };
 		80238DB3275E2D5400668C0E /* WeatherDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80238DB2275E2D5400668C0E /* WeatherDateFormatter.swift */; };
 		80238DB6275E5B7400668C0E /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80238DB5275E5B7400668C0E /* UIView+Extension.swift */; };
 		80238DB9275E5C5A00668C0E /* ForecastViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80238DB8275E5C5A00668C0E /* ForecastViewModel.swift */; };
@@ -49,6 +50,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8018E2D3276A21B100E623E4 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		80238DB2275E2D5400668C0E /* WeatherDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDateFormatter.swift; sourceTree = "<group>"; };
 		80238DB5275E5B7400668C0E /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		80238DB8275E5C5A00668C0E /* ForecastViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastViewModel.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				803B807D2760B6C000BCA239 /* SettingsManager.swift */,
+				8018E2D3276A21B100E623E4 /* UserSettings.swift */,
 				809A6B13276259FA0032D06C /* СonverterManager.swift */,
 			);
 			path = Managers;
@@ -426,6 +429,7 @@
 				80896BCC27675E3400C238AE /* SettingDetailsViewController.swift in Sources */,
 				808C09722758D86B009AF7DF /* WeatherDetailItem.swift in Sources */,
 				80630841274E9E51003C7905 /* CityWeather.swift in Sources */,
+				8018E2D4276A21B100E623E4 /* UserSettings.swift in Sources */,
 				80F30395275F7F7900AB80E9 /* UITableView+Extension.swift in Sources */,
 				80262D8C275FC22F001A662B /* SettingsDetailsModel.swift in Sources */,
 				809D44C92757845A00CC3586 /* ForecastCollectionViewCell.swift in Sources */,

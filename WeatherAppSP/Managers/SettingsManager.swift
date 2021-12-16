@@ -22,11 +22,11 @@ enum Distance: String, CaseIterable {
     case mile = "mile"
 }
 
-class SettingsManager {
+class SettingsManager: NSObject, NSCoding {
 
     static let shared = SettingsManager()
 
-    private init() {}
+    private override init() {}
 
     private var valueHour = Hour.twentyFour
     private var valueUnit = Unit.celsius
@@ -39,39 +39,73 @@ class SettingsManager {
                                   SettingDetailsModel(detailParameter: Detail.feelsLike, isOn: true),
                                   SettingDetailsModel(detailParameter: Detail.pressure, isOn: true)]
 
-    // MARK: - GET parameters funcs
+    private let userDefaults = UserSettings.shared
+
+    // MARK: - NSCoding
+    func encode(with coder: NSCoder) {
+        coder.encode(valueHour.rawValue, forKey: "valueHour")
+        coder.encode(valueUnit.rawValue, forKey: "valueUnit")
+        coder.encode(valueDistance.rawValue, forKey: "valueDistance")
+    }
+
+    required init?(coder: NSCoder) {
+        valueHour = Hour(rawValue: (coder.decodeObject(forKey: "valueHour") as? String ?? "")) ?? Hour.twentyFour
+        valueUnit = Unit(rawValue: (coder.decodeObject(forKey: "valueUnit") as? String ?? "")) ?? Unit.celsius
+        valueDistance = Distance(rawValue: (coder.decodeObject(forKey: "valueDistance")
+                                            as? String ?? "")) ?? Distance.kilometre
+    }
+
+    // MARK: - GET funcs
     func getValueHour() -> Hour {
-        return valueHour
+        if let value: Hour = userDefaults.getValueHour() {
+            return value
+        } else {
+            return valueHour
+        }
     }
 
     func getValueUnit() -> Unit {
-        return valueUnit
+        if let value: Unit = userDefaults.getValueUnit() {
+            return value
+        } else {
+            return valueUnit
+        }
     }
 
     func getValueDistance() -> Distance {
-        return valueDistance
+        if let value: Distance = userDefaults.getValueDistance() {
+            return value
+        } else {
+            return valueDistance
+        }
     }
 
-    // MARK: - SET parameters funcs
+    func getSettingDetails() -> [SettingDetailsModel] {
+        if let details: [SettingDetailsModel] = userDefaults.getSettingDetails() {
+            return details
+        } else {
+            return settingDetails
+        }
+    }
+
+    // MARK: - SET funcs
     func setValueHour(newValue: Hour) {
         valueHour = newValue
+        userDefaults.saveValueHour(newValue: newValue)
     }
 
     func setValueUnit(newValue: Unit) {
         valueUnit = newValue
+        userDefaults.saveValueUnit(newValue: newValue)
     }
 
     func setValueDistance(newValue: Distance) {
         valueDistance = newValue
+        userDefaults.saveValueDistance(newValue: newValue)
     }
 
-    // MARK: - GET details funcs
-    func getSettingDetails() -> [SettingDetailsModel] {
-        return settingDetails
-    }
-
-    // MARK: - SET details funcs
     func setSettingDetails(newSettingDetails: [SettingDetailsModel]) {
         settingDetails = newSettingDetails
+        userDefaults.saveSettingDetails(newSettingDetails: newSettingDetails)
     }
 }
