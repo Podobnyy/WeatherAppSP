@@ -7,14 +7,14 @@
 
 import Foundation
 
-class UserSettings {
+enum SettingsKey: String {
+    case valueHour
+    case valueUnit
+    case valueDistance
+    case settingDetails
+}
 
-    private enum SettingsKey: String {
-        case valueHour
-        case valueUnit
-        case valueDistance
-        case settingDetails
-    }
+class UserSettings {
 
     static let shared = UserSettings()
 
@@ -51,21 +51,21 @@ class UserSettings {
 
     // MARK: - Save in UserDefaults
     func saveValueHour(newValue: Hour) {
-        guard let savedData = try? NSKeyedArchiver.archivedData(withRootObject: newValue.rawValue,
-                                                                requiringSecureCoding: false) else { return }
-        defaults.set(savedData, forKey: SettingsKey.valueHour.rawValue)
+        save(newValue: newValue.rawValue, key: SettingsKey.valueHour.rawValue)
     }
 
     func saveValueUnit(newValue: Unit) {
-        guard let savedData = try? NSKeyedArchiver.archivedData(withRootObject: newValue.rawValue,
-                                                                requiringSecureCoding: false) else { return }
-        defaults.set(savedData, forKey: SettingsKey.valueUnit.rawValue)
+        save(newValue: newValue.rawValue, key: SettingsKey.valueUnit.rawValue)
     }
 
     func saveValueDistance(newValue: Distance) {
-        guard let savedData = try? NSKeyedArchiver.archivedData(withRootObject: newValue.rawValue,
-                                                                requiringSecureCoding: false)  else { return }
-        defaults.set(savedData, forKey: SettingsKey.valueDistance.rawValue)
+        save(newValue: newValue.rawValue, key: SettingsKey.valueDistance.rawValue)
+    }
+
+    private func save(newValue: String, key: String) {
+        guard let savedData = try? NSKeyedArchiver.archivedData(withRootObject: newValue,
+                                                                requiringSecureCoding: false) else { return }
+        defaults.set(savedData, forKey: key)
     }
 
     func saveSettingDetails(newSettingDetails: [SettingDetailsModel]) {

@@ -29,8 +29,17 @@ class WeatherViewController: BaseViewController {
 
     private var forecastDataSource = [Forecast]()
 
+    private var cityWeather: CityWeather?
+    private var stackView1 = UIStackView()
+    private var stackView2 = UIStackView()
+    private var stackView3 = UIStackView()
+
     private let aspectRatioToView: CGFloat = 8
     private let heightCellLessCollection = 0.5
+
+    private let settingsManager = SettingsManager.shared
+    private let converterManager = СonverterManager.shared
+    private let weatherDateFormatter = WeatherDateFormatter.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,13 +50,23 @@ class WeatherViewController: BaseViewController {
         loadData()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        guard let cityWeather = cityWeather else { return }
+
+        reloadDataFromUpperStackView(cityWeather: cityWeather)
+        forecastCollectionView.reloadData()
+        reloadDetailStackView(cityWeather: cityWeather)
+    }
+
     // MARK: - Start view screen
     override func startViewScreen(title: String) {
         super.startViewScreen(title: title)
-        clearLabel()
+        clearLabels()
     }
 
-    private func clearLabel() {
+    private func clearLabels() {
         nameLabel.text = ""
         weatherDescriptionLabel.text = ""
         dateLabel.text = ""
@@ -121,7 +140,7 @@ class WeatherViewController: BaseViewController {
         }
     }
 
-    // MARK: - NetworkManager
+    // MARK: - Downloading data from the internet (NetworkManager)
     private func loadData() {
         startAllActivityIndicators()
 
@@ -130,6 +149,7 @@ class WeatherViewController: BaseViewController {
 
             DispatchQueue.main.async {
                 self?.setupUpperStackView(cityWeather: cityWeather)
+                self?.cityWeather = cityWeather
 
                 self?.forecastDataSource = cityWeather.forecasts
                 self?.forecastCollectionView.reloadData()
@@ -147,54 +167,30 @@ class WeatherViewController: BaseViewController {
         weatherDescriptionImage.image = ImageWeather.shared
             .getImageWeather(weatherDescriptionString: cityWeather.weatherDescription)
         weatherDescriptionLabel.text = cityWeather.weatherDescription
-        dateLabel.text = WeatherDateFormatter.shared.getDateStringFromDate(date: cityWeather.date)
-        tempLabel.text = "\(cityWeather.temp)°"
-        sunriseLabel.text = WeatherDateFormatter.shared.getTimeStringFromDate(date: cityWeather.sunrise)
-        sunsetLabel.text = WeatherDateFormatter.shared.getTimeStringFromDate(date: cityWeather.sunset)
+        dateLabel.text = weatherDateFormatter.getDateStringFromDate(date: cityWeather.date)
+        reloadDataFromUpperStackView(cityWeather: cityWeather)
 
         [nameLabel, weatherDescriptionLabel, dateLabel, tempLabel].forEach {
             LabelFormatter.shared.setupLabelSizeFont(label: $0)
         }
     }
 
+    private func reloadDataFromUpperStackView(cityWeather: CityWeather) {
+        tempLabel.text = getUnitSelectedFormat(celsius: cityWeather.temp)
+
+        sunriseLabel.text = getHourWithMinutesSelectedFormat(hourTwentyFour:
+                                    weatherDateFormatter.getHourWithMinutesStringFromDate(date: cityWeather.sunrise))
+        sunsetLabel.text = getHourWithMinutesSelectedFormat(hourTwentyFour:
+                                    weatherDateFormatter.getHourWithMinutesStringFromDate(date: cityWeather.sunset))
+    }
+
     // MARK: - func for DetailStackView
     private func setupDetailStackView(cityWeather: CityWeather) {
-        let stackView1 = getCustomStackViewForDetailView()
-        let stackView2 = getCustomStackViewForDetailView()
-        let stackView3 = getCustomStackViewForDetailView()
+        stackView1 = getCustomStackViewForDetailView()
+        stackView2 = getCustomStackViewForDetailView()
+        stackView3  = getCustomStackViewForDetailView()
 
-        let humidityItem = WeatherDetailItem.init(name: "Humidity", value: cityWeather.humidity)
-        let windSpeedItem = WeatherDetailItem.init(name: "Wind Speed", value: cityWeather.windSpeed)
-        let tempMinItem = WeatherDetailItem.init(name: "Min Temp", value: cityWeather.tempMin)
-        let tempMaxItem = WeatherDetailItem.init(name: "Max Temp", value: cityWeather.tempMax)
-        let feelsLikeItem = WeatherDetailItem.init(name: "Feels Like", value: cityWeather.feelsLike)
-        let pressureItem = WeatherDetailItem.init(name: "Pressure", value: cityWeather.pressure)
-
-        let humidityModel = WeatherDetailViewModel.init(weatherDetailItem: humidityItem)
-        let windSpeedModel = WeatherDetailViewModel.init(weatherDetailItem: windSpeedItem)
-        let tempMinModel = WeatherDetailViewModel.init(weatherDetailItem: tempMinItem)
-        let tempMaxModel = WeatherDetailViewModel.init(weatherDetailItem: tempMaxItem)
-        let feelsLikeModel = WeatherDetailViewModel.init(weatherDetailItem: feelsLikeItem)
-        let pressureModel = WeatherDetailViewModel.init(weatherDetailItem: pressureItem)
-
-        let view1 = getWeatherDetailView(weatherDetailViewModel: humidityModel)
-        let view2 = getWeatherDetailView(weatherDetailViewModel: windSpeedModel)
-        let view3 = getWeatherDetailView(weatherDetailViewModel: tempMinModel)
-        let view4 = getWeatherDetailView(weatherDetailViewModel: tempMaxModel)
-        let view5 = getWeatherDetailView(weatherDetailViewModel: feelsLikeModel)
-        let view6 = getWeatherDetailView(weatherDetailViewModel: pressureModel)
-
-        stackView1.addArrangedSubview(view1)
-        stackView1.addArrangedSubview(view2)
-        stackView2.addArrangedSubview(view3)
-        stackView2.addArrangedSubview(view4)
-        stackView3.addArrangedSubview(view5)
-        stackView3.addArrangedSubview(view6)
-
-        detailStackView.addArrangedSubview(stackView1)
-        detailStackView.addArrangedSubview(stackView2)
-        detailStackView.addArrangedSubview(stackView3)
-//        detailView.isHidden = true
+        reloadDetailStackView(cityWeather: cityWeather)
     }
 
     private func getCustomStackViewForDetailView() -> UIStackView {
@@ -205,6 +201,56 @@ class WeatherViewController: BaseViewController {
         return stackView
     }
 
+    private func reloadDetailStackView(cityWeather: CityWeather) {
+        clearDetailStackView()
+
+        var settingDetailsOnArray = [SettingDetailsModel]()
+        settingsManager.getSettingDetails().forEach { settingDetailsModel in
+            if settingDetailsModel.isOn {
+                settingDetailsOnArray.append(settingDetailsModel)
+            }
+        }
+
+        settingDetailsOnArray.enumerated().forEach {
+            let nameParameter = $1.detailParameter.rawValue
+            let valueParameter = getValueParameterByName(nameParameter: nameParameter, cityWeather: cityWeather)
+
+            let detailItem = WeatherDetailItem.init(name: nameParameter, value: valueParameter)
+            let detailModel = WeatherDetailViewModel.init(weatherDetailItem: detailItem)
+            let view = getWeatherDetailView(weatherDetailViewModel: detailModel)
+            addWeatherDetailViewOnStackView(view: view, index: $0)
+        }
+        showFilledStackViews(countViews: settingDetailsOnArray.count)
+    }
+
+    private func clearDetailStackView() {
+        clearStackView(stackView: stackView1)
+        clearStackView(stackView: stackView2)
+        clearStackView(stackView: stackView3)
+
+        clearStackView(stackView: detailStackView)
+    }
+
+    private func clearStackView(stackView: UIStackView) {
+        stackView.subviews.forEach { view in
+            view.removeFromSuperview()
+        }
+    }
+
+    private func getValueParameterByName(nameParameter: String, cityWeather: CityWeather) -> String {
+        var valueParameter = ""
+        switch nameParameter {
+        case "Humidity": valueParameter = String(cityWeather.humidity) + "%"
+        case "Wind Speed": valueParameter = getDistanceSelectedFormat(metre: cityWeather.windSpeed)
+        case "Min Temp": valueParameter = getUnitSelectedFormat(celsius: cityWeather.tempMin)
+        case "Max Temp": valueParameter = getUnitSelectedFormat(celsius: cityWeather.tempMax)
+        case "Feels Like": valueParameter = getUnitSelectedFormat(celsius: cityWeather.feelsLike)
+        case "Pressure": valueParameter = String(Int(round(cityWeather.pressure)))
+        default: break
+        }
+        return valueParameter
+    }
+
     private func getWeatherDetailView(weatherDetailViewModel: WeatherDetailViewModel) -> WeatherDetailView {
         let detailView = WeatherDetailView.fromNib(named: String(describing: WeatherDetailView.self))
         detailView.setup(weatherDetailViewModel: weatherDetailViewModel)
@@ -213,9 +259,66 @@ class WeatherViewController: BaseViewController {
         detailView.heightAnchor.constraint(equalToConstant: heightForView).isActive = true
         return detailView
     }
+
+    private func addWeatherDetailViewOnStackView(view: WeatherDetailView, index: Int) {
+        switch index {
+        case 0...1: stackView1.addArrangedSubview(view)
+        case 2...3: stackView2.addArrangedSubview(view)
+        case 4...5: stackView3.addArrangedSubview(view)
+        default: break
+        }
+    }
+
+    private func showFilledStackViews(countViews: Int) {
+        detailView.isHidden = countViews == 0
+
+        switch countViews {
+        case 1...2:
+            detailStackView.addArrangedSubview(stackView1)
+        case 3...4:
+            detailStackView.addArrangedSubview(stackView1)
+            detailStackView.addArrangedSubview(stackView2)
+        case 5...6:
+            detailStackView.addArrangedSubview(stackView1)
+            detailStackView.addArrangedSubview(stackView2)
+            detailStackView.addArrangedSubview(stackView3)
+        default:
+            break
+        }
+    }
+
+    // MARK: - func for Converter Hour/Unit/Distance
+    private func getHourSelectedFormat(hourTwentyFour: String) -> String {
+        switch settingsManager.getValueHour() {
+        case .twelve: return String(converterManager.getTwelveHourFromTwentyFourHour(twentyFourHour:
+                                                                                        Int(hourTwentyFour) ?? 0))
+        case .twentyFour: return hourTwentyFour
+        }
+    }
+
+    private func getHourWithMinutesSelectedFormat(hourTwentyFour: String) -> String {
+        switch settingsManager.getValueHour() {
+        case .twelve: return converterManager.getTwelveHourFromTwentyFourHourWithMinutes(twentyFourHour: hourTwentyFour)
+        case .twentyFour: return hourTwentyFour
+        }
+    }
+
+    private func getUnitSelectedFormat(celsius: Double) -> String {
+        switch settingsManager.getValueUnit() {
+        case .celsius: return "\(Int(round(celsius)))°C"
+        case .fahrenheit: return "\(Int(round(converterManager.getFahrenheitFromCelsius(celsius: celsius))))°F"
+        }
+    }
+
+    private func getDistanceSelectedFormat(metre: Double) -> String {
+        switch settingsManager.getValueDistance() {
+        case .kilometre: return "\(Int(round(metre)))m/s"
+        case .mile: return "\(Int(round(converterManager.getFootSecondFromMetreSecond(metreSecond: metre))))ft/s"
+        }
+    }
 }
 
-// MARK: - Extensions
+// MARK: - UICollectionViewDataSource
 extension WeatherViewController: UICollectionViewDataSource {
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -229,12 +332,17 @@ extension WeatherViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: ForecastCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
-        let forecastViewModel = ForecastViewModel(forecast: forecastDataSource[indexPath.row])
+
+        var forecastViewModel = ForecastViewModel(forecast: forecastDataSource[indexPath.row])
+        forecastViewModel.time = getHourSelectedFormat(hourTwentyFour: forecastViewModel.time)
+        forecastViewModel.temp = getUnitSelectedFormat(celsius: forecastDataSource[indexPath.row].temp)
+
         cell.setup(forecastViewModel: forecastViewModel)
         return cell
     }
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
 extension WeatherViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView,

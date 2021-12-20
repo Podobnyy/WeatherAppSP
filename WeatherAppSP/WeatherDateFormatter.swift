@@ -15,25 +15,18 @@ class WeatherDateFormatter {
 
     let formatter = DateFormatter()
 
-    // MARK: - func
     func getDateStringFromDate(date: Date) -> String {
         formatter.setLocalizedDateFormatFromTemplate("EEEEdMMMMyyyy")
-
-        let result = formatter.string(from: date)
-        return result
+        return formatter.string(from: date)
     }
 
-    func getTimeStringFromDate(date: Date) -> String {
+    func getHourWithMinutesStringFromDate(date: Date) -> String {
         formatter.setLocalizedDateFormatFromTemplate("HHmm")
-
-        let result = formatter.string(from: date)
-        return result
+        return formatter.string(from: date)
     }
 
     func getHourStringFromDate(date: Date) -> String {
         formatter.setLocalizedDateFormatFromTemplate("HH")
-
-        let result = formatter.string(from: date)
-        return result
+        return formatter.string(from: date)
     }
 }

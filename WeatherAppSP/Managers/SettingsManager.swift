@@ -43,21 +43,23 @@ class SettingsManager: NSObject, NSCoding {
 
     // MARK: - NSCoding
     func encode(with coder: NSCoder) {
-        coder.encode(valueHour.rawValue, forKey: "valueHour")
-        coder.encode(valueUnit.rawValue, forKey: "valueUnit")
-        coder.encode(valueDistance.rawValue, forKey: "valueDistance")
+        coder.encode(valueHour.rawValue, forKey: SettingsKey.valueHour.rawValue)
+        coder.encode(valueUnit.rawValue, forKey: SettingsKey.valueUnit.rawValue)
+        coder.encode(valueDistance.rawValue, forKey: SettingsKey.valueDistance.rawValue)
     }
 
     required init?(coder: NSCoder) {
-        valueHour = Hour(rawValue: (coder.decodeObject(forKey: "valueHour") as? String ?? "")) ?? Hour.twentyFour
-        valueUnit = Unit(rawValue: (coder.decodeObject(forKey: "valueUnit") as? String ?? "")) ?? Unit.celsius
-        valueDistance = Distance(rawValue: (coder.decodeObject(forKey: "valueDistance")
-                                            as? String ?? "")) ?? Distance.kilometre
+        valueHour = Hour(rawValue: (coder.decodeObject(forKey: SettingsKey.valueHour.rawValue)
+                                    as? String ?? "")) ?? .twentyFour
+        valueUnit = Unit(rawValue: (coder.decodeObject(forKey: SettingsKey.valueUnit.rawValue)
+                                    as? String ?? "")) ?? .celsius
+        valueDistance = Distance(rawValue: (coder.decodeObject(forKey: SettingsKey.valueDistance.rawValue)
+                                            as? String ?? "")) ?? .kilometre
     }
 
     // MARK: - GET funcs
     func getValueHour() -> Hour {
-        if let value: Hour = userDefaults.getValueHour() {
+        if let value = userDefaults.getValueHour() {
             return value
         } else {
             return valueHour
@@ -65,7 +67,7 @@ class SettingsManager: NSObject, NSCoding {
     }
 
     func getValueUnit() -> Unit {
-        if let value: Unit = userDefaults.getValueUnit() {
+        if let value = userDefaults.getValueUnit() {
             return value
         } else {
             return valueUnit
@@ -73,7 +75,7 @@ class SettingsManager: NSObject, NSCoding {
     }
 
     func getValueDistance() -> Distance {
-        if let value: Distance = userDefaults.getValueDistance() {
+        if let value = userDefaults.getValueDistance() {
             return value
         } else {
             return valueDistance
@@ -81,7 +83,7 @@ class SettingsManager: NSObject, NSCoding {
     }
 
     func getSettingDetails() -> [SettingDetailsModel] {
-        if let details: [SettingDetailsModel] = userDefaults.getSettingDetails() {
+        if let details = userDefaults.getSettingDetails() {
             return details
         } else {
             return settingDetails

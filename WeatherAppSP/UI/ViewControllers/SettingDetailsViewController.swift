@@ -50,13 +50,13 @@ class SettingDetailsViewController: BaseViewController {
 
     // MARK: - other func
     @objc private func clickEditBarButton() {
-        if tableView.isEditing == false {
-            tableView.isEditing = true
-            editBarButtonItem.title = "Save"
-        } else {
+        if tableView.isEditing {
             settingsManager.setSettingDetails(newSettingDetails: tableViewDataSource)
             tableView.isEditing = false
             editBarButtonItem.title = "Edit"
+        } else {
+            tableView.isEditing = true
+            editBarButtonItem.title = "Save"
         }
     }
 }
@@ -112,11 +112,12 @@ extension SettingDetailsViewController: UITableViewDelegate {
     }
 }
 
+// MARK: - SettingDetailTableViewCellDelegate
 extension SettingDetailsViewController: SettingDetailTableViewCellDelegate {
+
     func settingDetailTableViewCell(cell: SettingDetailTableViewCell, selectionSwitch: Bool) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
 
-        // TODO: Ask Max: change sent one? How mute UISwitch?
         let settingDetailsModel: SettingDetailsModel = tableViewDataSource[indexPath.row]
         settingDetailsModel.isOn = selectionSwitch
         tableViewDataSource[indexPath.row] = settingDetailsModel
