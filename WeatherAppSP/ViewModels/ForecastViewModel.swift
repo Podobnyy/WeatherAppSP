@@ -9,8 +9,8 @@ import UIKit
 
 struct ForecastViewModel {
 
-    let time: String
-    let temp: String
+    var time: String
+    var temp: String
     let weatherDescription: UIImage
 
     init(forecast: Forecast) {

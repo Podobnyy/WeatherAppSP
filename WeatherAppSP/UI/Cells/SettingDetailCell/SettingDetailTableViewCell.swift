@@ -24,11 +24,7 @@ class SettingDetailTableViewCell: UITableViewCell {
     }
 
     // MARK: - IBAction
-    @IBAction func changedValueSwitch(_ sender: Any) {
-        if (sender as AnyObject).isOn == true {
-            delegate?.settingDetailTableViewCell(cell: self, selectionSwitch: true)
-        } else {
-            delegate?.settingDetailTableViewCell(cell: self, selectionSwitch: false)
-        }
+    @IBAction func changedValueSwitch(_ sender: UISwitch) {
+        delegate?.settingDetailTableViewCell(cell: self, selectionSwitch: sender.isOn)
     }
 }
