@@ -8,7 +8,7 @@
 import UIKit
 
 protocol SettingDetailTableViewCellDelegate: AnyObject {
-    func settingDetailTableViewCell(cell: SettingDetailTableViewCell, selectionSwitch: Bool)
+    func settingDetailTableViewCell(_ cell: SettingDetailTableViewCell, didSwitchSettingTo: Bool)
 }
 
 class SettingDetailTableViewCell: UITableViewCell {
@@ -24,7 +24,7 @@ class SettingDetailTableViewCell: UITableViewCell {
     }
 
     // MARK: - IBAction
-    @IBAction func changedValueSwitch(_ sender: UISwitch) {
-        delegate?.settingDetailTableViewCell(cell: self, selectionSwitch: sender.isOn)
+    @IBAction private func changedValueSwitch(_ sender: UISwitch) {
+        delegate?.settingDetailTableViewCell(self, didSwitchSettingTo: sender.isOn)
     }
 }

@@ -18,12 +18,11 @@ class TabBarController: UITabBarController {
 
         guard let items = self.tabBar.items else { return }
 
-        let tabBarItems = ["Weather", "Settings"]
+        let tabBarItems = ["Weather", "Forecast Days", "Settings"]
 
         for index in 0..<items.count {
             items[index].title = tabBarItems[index]
             items[index].image = UIImage(named: tabBarItems[index])
         }
-
     }
 }

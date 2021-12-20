@@ -28,6 +28,8 @@ class SettingsManager: NSObject, NSCoding {
 
     private override init() {}
 
+    private let converterManager = СonverterManager.shared
+
     private var valueHour = Hour.twentyFour
     private var valueUnit = Unit.celsius
     private var valueDistance = Distance.kilometre
@@ -55,6 +57,37 @@ class SettingsManager: NSObject, NSCoding {
                                     as? String ?? "")) ?? .celsius
         valueDistance = Distance(rawValue: (coder.decodeObject(forKey: SettingsKey.valueDistance.rawValue)
                                             as? String ?? "")) ?? .kilometre
+    }
+
+    // MARK: - func for Converter Hour/Unit/Distance
+    func getHourSelectedFormat(hourTwentyFour: String) -> String {
+        switch getValueHour() {
+        case .twelve: return String(converterManager.getTwelveHourFromTwentyFourHour(
+            twentyFourHour: Int(hourTwentyFour) ?? 0))
+        case .twentyFour:
+            return hourTwentyFour
+        }
+    }
+
+    func getHourWithMinutesSelectedFormat(hourTwentyFour: String) -> String {
+        switch getValueHour() {
+        case .twelve: return converterManager.getTwelveHourFromTwentyFourHourWithMinutes(twentyFourHour: hourTwentyFour)
+        case .twentyFour: return hourTwentyFour
+        }
+    }
+
+    func getUnitSelectedFormat(celsius: Double) -> String {
+        switch getValueUnit() {
+        case .celsius: return "\(Int(round(celsius)))°C"
+        case .fahrenheit: return "\(Int(round(converterManager.getFahrenheitFromCelsius(celsius: celsius))))°F"
+        }
+    }
+
+    func getDistanceSelectedFormat(metre: Double) -> String {
+        switch getValueDistance() {
+        case .kilometre: return "\(Int(round(metre)))m/s"
+        case .mile: return "\(Int(round(converterManager.getFootSecondFromMetreSecond(metreSecond: metre))))ft/s"
+        }
     }
 
     // MARK: - GET funcs

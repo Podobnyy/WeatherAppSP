@@ -115,7 +115,7 @@ extension SettingDetailsViewController: UITableViewDelegate {
 // MARK: - SettingDetailTableViewCellDelegate
 extension SettingDetailsViewController: SettingDetailTableViewCellDelegate {
 
-    func settingDetailTableViewCell(cell: SettingDetailTableViewCell, selectionSwitch: Bool) {
+    func settingDetailTableViewCell(_ cell: SettingDetailTableViewCell, didSwitchSettingTo selectionSwitch: Bool) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
 
         let settingDetailsModel: SettingDetailsModel = tableViewDataSource[indexPath.row]
