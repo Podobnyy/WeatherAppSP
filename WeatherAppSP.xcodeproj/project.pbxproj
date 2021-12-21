@@ -28,6 +28,12 @@
 		80630845274F91CB003C7905 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80630844274F91CB003C7905 /* WeatherViewController.swift */; };
 		8064657C2767352A0084896C /* WeatherDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8064657A2767352A0084896C /* WeatherDetailView.swift */; };
 		806D4FA82771E5E300B0E78F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806D4FA72771E5E300B0E78F /* SceneDelegate.swift */; };
+		806D4FAE2771EDF000B0E78F /* LocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806D4FAD2771EDF000B0E78F /* LocationsViewController.swift */; };
+		806D4FB02771F4FA00B0E78F /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806D4FAF2771F4FA00B0E78F /* LocationViewModel.swift */; };
+		806D4FB42771F84600B0E78F /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806D4FB22771F84600B0E78F /* LocationTableViewCell.swift */; };
+		806D4FB52771F84600B0E78F /* LocationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 806D4FB32771F84600B0E78F /* LocationTableViewCell.xib */; };
+		806D4FB72772141600B0E78F /* ResponseCurrentWeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806D4FB62772141600B0E78F /* ResponseCurrentWeatherModel.swift */; };
+		806D4FBB27722E7100B0E78F /* CurrentWeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806D4FBA27722E7100B0E78F /* CurrentWeatherModel.swift */; };
 		80896BCC27675E3400C238AE /* SettingDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80896BCA27675E3400C238AE /* SettingDetailsViewController.swift */; };
 		80896BCF27677DAC00C238AE /* SettingDetailsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80896BCE27677DAC00C238AE /* SettingDetailsViewController.storyboard */; };
 		80896BD32767947B00C238AE /* SettingDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80896BD12767947B00C238AE /* SettingDetailTableViewCell.swift */; };
@@ -76,6 +82,12 @@
 		80630844274F91CB003C7905 /* WeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
 		8064657A2767352A0084896C /* WeatherDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDetailView.swift; sourceTree = "<group>"; };
 		806D4FA72771E5E300B0E78F /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		806D4FAD2771EDF000B0E78F /* LocationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsViewController.swift; sourceTree = "<group>"; };
+		806D4FAF2771F4FA00B0E78F /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
+		806D4FB22771F84600B0E78F /* LocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewCell.swift; sourceTree = "<group>"; };
+		806D4FB32771F84600B0E78F /* LocationTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LocationTableViewCell.xib; sourceTree = "<group>"; };
+		806D4FB62772141600B0E78F /* ResponseCurrentWeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseCurrentWeatherModel.swift; sourceTree = "<group>"; };
+		806D4FBA27722E7100B0E78F /* CurrentWeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherModel.swift; sourceTree = "<group>"; };
 		80896BCA27675E3400C238AE /* SettingDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingDetailsViewController.swift; sourceTree = "<group>"; };
 		80896BCE27677DAC00C238AE /* SettingDetailsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SettingDetailsViewController.storyboard; sourceTree = "<group>"; };
 		80896BD12767947B00C238AE /* SettingDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingDetailTableViewCell.swift; sourceTree = "<group>"; };
@@ -133,6 +145,7 @@
 		80238DB7275E5C2300668C0E /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				806D4FAF2771F4FA00B0E78F /* LocationViewModel.swift */,
 				80238DB8275E5C5A00668C0E /* ForecastViewModel.swift */,
 				80238DBA275E600D00668C0E /* WeatherDetailViewModel.swift */,
 				808B8B702770D2E20028A83F /* ForecastDayViewModel.swift */,
@@ -162,6 +175,8 @@
 		80630839274E4BF2003C7905 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				806D4FB62772141600B0E78F /* ResponseCurrentWeatherModel.swift */,
+				806D4FBA27722E7100B0E78F /* CurrentWeatherModel.swift */,
 				8063083C274E8BDE003C7905 /* ResponseModel.swift */,
 				80630840274E9E51003C7905 /* CityWeather.swift */,
 				808C09712758D86B009AF7DF /* WeatherDetailItem.swift */,
@@ -189,6 +204,7 @@
 			isa = PBXGroup;
 			children = (
 				80F30382275F616C00AB80E9 /* BaseViewController.swift */,
+				806D4FAD2771EDF000B0E78F /* LocationsViewController.swift */,
 				80630844274F91CB003C7905 /* WeatherViewController.swift */,
 				808B8B6127709CC80028A83F /* ForecastViewController.swift */,
 				80F30380275F60A600AB80E9 /* SettingsViewController.swift */,
@@ -215,6 +231,15 @@
 				80238DBC275E662800668C0E /* LabelFormatter.swift */,
 			);
 			path = Formatters;
+			sourceTree = "<group>";
+		};
+		806D4FB12771F82700B0E78F /* LocationTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				806D4FB22771F84600B0E78F /* LocationTableViewCell.swift */,
+				806D4FB32771F84600B0E78F /* LocationTableViewCell.xib */,
+			);
+			path = LocationTableViewCell;
 			sourceTree = "<group>";
 		};
 		80896BD02767941600C238AE /* SettingDetailCell */ = {
@@ -292,6 +317,7 @@
 		80F30384275F6D3C00AB80E9 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				806D4FB12771F82700B0E78F /* LocationTableViewCell */,
 				809D44C72757843000CC3586 /* ForecastCell */,
 				808B8B632770A52E0028A83F /* ForecastDayTableViewCell */,
 				80F30385275F6D3C00AB80E9 /* SettingsCells */,
@@ -390,6 +416,7 @@
 			files = (
 				80262D82275FA7B4001A662B /* SettingsTableViewCell.xib in Resources */,
 				80EBCC81274D53F200319585 /* LaunchScreen.storyboard in Resources */,
+				806D4FB52771F84600B0E78F /* LocationTableViewCell.xib in Resources */,
 				80896BCF27677DAC00C238AE /* SettingDetailsViewController.storyboard in Resources */,
 				808B8B6F2770BF660028A83F /* ForecastDayTableViewCell.xib in Resources */,
 				80262D8A275FC08E001A662B /* SettingsDetailsTableViewCell.xib in Resources */,
@@ -453,6 +480,7 @@
 			files = (
 				80238DB6275E5B7400668C0E /* UIView+Extension.swift in Sources */,
 				8063083B274E4C67003C7905 /* NetworkManager.swift in Sources */,
+				806D4FB02771F4FA00B0E78F /* LocationViewModel.swift in Sources */,
 				80238DBD275E662800668C0E /* LabelFormatter.swift in Sources */,
 				80238DB9275E5C5A00668C0E /* ForecastViewModel.swift in Sources */,
 				80F30383275F616C00AB80E9 /* BaseViewController.swift in Sources */,
@@ -462,6 +490,7 @@
 				80238DBB275E600D00668C0E /* WeatherDetailViewModel.swift in Sources */,
 				808B8B6E2770BF660028A83F /* ForecastDayTableViewCell.swift in Sources */,
 				80238DB3275E2D5400668C0E /* WeatherDateFormatter.swift in Sources */,
+				806D4FAE2771EDF000B0E78F /* LocationsViewController.swift in Sources */,
 				80262D84275FB9DD001A662B /* UICollectionView+Extension.swift in Sources */,
 				80896BCC27675E3400C238AE /* SettingDetailsViewController.swift in Sources */,
 				808C09722758D86B009AF7DF /* WeatherDetailItem.swift in Sources */,
@@ -472,6 +501,7 @@
 				80262D8C275FC22F001A662B /* SettingsDetailsModel.swift in Sources */,
 				809D44C92757845A00CC3586 /* ForecastCollectionViewCell.swift in Sources */,
 				808B8B712770D2E20028A83F /* ForecastDayViewModel.swift in Sources */,
+				806D4FB72772141600B0E78F /* ResponseCurrentWeatherModel.swift in Sources */,
 				8064657C2767352A0084896C /* WeatherDetailView.swift in Sources */,
 				80262D89275FC08E001A662B /* SettingsDetailsTableViewCell.swift in Sources */,
 				80F30393275F7E6C00AB80E9 /* SettingsModel.swift in Sources */,
@@ -481,8 +511,10 @@
 				808C097527592F5C009AF7DF /* TabBarController.swift in Sources */,
 				803B807E2760B6C000BCA239 /* SettingsManager.swift in Sources */,
 				808B8B6227709CC80028A83F /* ForecastViewController.swift in Sources */,
+				806D4FB42771F84600B0E78F /* LocationTableViewCell.swift in Sources */,
 				8063083D274E8BDE003C7905 /* ResponseModel.swift in Sources */,
 				808B8B6B2770B7020028A83F /* ForecastDayModel.swift in Sources */,
+				806D4FBB27722E7100B0E78F /* CurrentWeatherModel.swift in Sources */,
 				80262D81275FA7B4001A662B /* SettingsTableViewCell.swift in Sources */,
 				809A6B14276259FA0032D06C /* СonverterManager.swift in Sources */,
 				80896BD82767A3EA00C238AE /* SettingDetailsModel.swift in Sources */,

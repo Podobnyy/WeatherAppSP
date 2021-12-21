@@ -18,8 +18,8 @@ final class TabBarController: UITabBarController {
 
         guard let items = tabBar.items else { return }
 
-        let tabBarTitleItems = ["Weather", "Forecast Days", "Settings"]
-        let tabBarImageItems = ["Weather", "Calendar", "Settings"]
+        let tabBarTitleItems = ["Locations", "Weather", "Forecast Days", "Settings"]
+        let tabBarImageItems = ["location.circle.fill", "Weather", "Calendar", "Settings"]
 
         items.enumerated().forEach {
             $1.title = tabBarTitleItems[$0]

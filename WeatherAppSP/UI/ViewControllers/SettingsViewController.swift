@@ -112,9 +112,7 @@ extension SettingsViewController: UITableViewDataSource {
 extension SettingsViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let width = tableView.frame.size.width
-        let aspectRatio: CGFloat = 414 / 80
-        return width / aspectRatio
+        return tableView.frame.size.width / Constants.aspectRatioTableViewCells
     }
 
     // MARK: - Navigation

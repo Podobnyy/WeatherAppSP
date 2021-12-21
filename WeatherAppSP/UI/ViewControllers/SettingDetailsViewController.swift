@@ -96,9 +96,7 @@ extension SettingDetailsViewController: UITableViewDataSource {
 extension SettingDetailsViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let width = tableView.frame.size.width
-        let aspectRatio: CGFloat = 414 / 80
-        return width / aspectRatio
+        return tableView.frame.size.width / Constants.aspectRatioTableViewCells
     }
 
     // Hide button"remove" cell

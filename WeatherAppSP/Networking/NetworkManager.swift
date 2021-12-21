@@ -7,20 +7,26 @@
 
 import Foundation
 
-typealias CityLoadComplitionalBlock = (_ result: CityWeather?) -> Void
+typealias CurrentWeatherLoadComplitionalBlock = (_ result: CurrentWeatherModel?) -> Void
+typealias ForecastCityLoadComplitionalBlock = (_ result: CityWeather?) -> Void
 
 final class NetworkManager {
-    private let beginApiForCity = "https://api.openweathermap.org/data/2.5/forecast?units=metric&q="
+    private let beginApi = "https://api.openweathermap.org/data/2.5/"
+    private let apiForForecastCity = "forecast"
+    private let apiForCurrentWeatherCity = "weather"
+    private let apiSettings = "?units=metric&q="
     private let apiKey = "837e4c533ab63ecab027461450b08c1d"
 
     private let session = URLSession.shared
+    private let decoder = JSONDecoder()
 
     static let shared = NetworkManager()
 
     private init() {}
 
-    func callCityWeatherRequest(cityNameString: String, completion: @escaping CityLoadComplitionalBlock ) {
-        let urlString = beginApiForCity + cityNameString + "&appid=\(apiKey)"
+    // MARK: - For Current Weather
+    func callCurrentWeatherRequest(cityNameString: String, completion: @escaping CurrentWeatherLoadComplitionalBlock) {
+        let urlString = beginApi + apiForCurrentWeatherCity + apiSettings + cityNameString + "&appid=\(apiKey)"
         guard let url = URL(string: urlString) else { return }
 
         session.dataTask(with: url) { (data, _, error) in
@@ -28,10 +34,39 @@ final class NetworkManager {
             guard let data = data else { return }
 
             do {
-                let decoder = JSONDecoder()
-                let responseModel: ResponseModel = try decoder.decode(ResponseModel.self, from: data)
+                let responseModel: ResponseCurrentWeatherModel =
+                    try self.decoder.decode(ResponseCurrentWeatherModel.self, from: data)
 
-                let cityWeather = self.getCityWeatherFromResponseModel(responseModel: responseModel)
+                let currentWeather = self.getCurrentWeatherModelFromResponseModel(responseModel)
+                completion(currentWeather)
+            } catch {
+                print(error)
+            }
+        }.resume()
+    }
+
+    private func getCurrentWeatherModelFromResponseModel(_ responseModel: ResponseCurrentWeatherModel
+    ) -> CurrentWeatherModel {
+        let currentWeatherModel = CurrentWeatherModel(name: responseModel.name,
+                                                      temp: responseModel.main.temp,
+                                                      iconString: responseModel.weather[0].icon)
+        return currentWeatherModel
+    }
+
+    // MARK: - For Forecast City
+    func callForecastCityWeatherRequest(cityNameString: String,
+                                        completion: @escaping ForecastCityLoadComplitionalBlock ) {
+        let urlString = beginApi + apiForForecastCity + apiSettings + cityNameString + "&appid=\(apiKey)"
+        guard let url = URL(string: urlString) else { return }
+
+        session.dataTask(with: url) { (data, _, error) in
+
+            guard let data = data else { return }
+
+            do {
+                let responseModel: ResponseModel = try self.decoder.decode(ResponseModel.self, from: data)
+
+                let cityWeather = self.getCityWeatherFromResponseModel(responseModel)
                 completion(cityWeather)
             } catch {
                 print(error)
@@ -39,7 +74,7 @@ final class NetworkManager {
         }.resume()
     }
 
-    private func getCityWeatherFromResponseModel(responseModel: ResponseModel) -> CityWeather {
+    private func getCityWeatherFromResponseModel(_ responseModel: ResponseModel) -> CityWeather {
         let cityWeather = CityWeather(
             name: responseModel.city.name,
             weatherDescription: responseModel.list[0].weather[0].description,

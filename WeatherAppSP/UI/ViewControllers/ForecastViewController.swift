@@ -71,10 +71,6 @@ extension ForecastViewController: UITableViewDataSource {
 extension ForecastViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return tableView.frame.size.width / Constants.aspectRatio
+        return tableView.frame.size.width / Constants.aspectRatioTableViewCells
     }
-}
-
-private enum Constants {
-    static let aspectRatio: CGFloat = 414 / 80
 }
