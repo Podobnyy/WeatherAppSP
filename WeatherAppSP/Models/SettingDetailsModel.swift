@@ -16,7 +16,7 @@ enum Detail: String, CaseIterable {
     case pressure = "Pressure"
 }
 
-class SettingDetailsModel: NSObject, NSCoding {
+final class SettingDetailsModel: NSObject, NSCoding {
     let detailParameter: Detail
     var isOn: Bool
 

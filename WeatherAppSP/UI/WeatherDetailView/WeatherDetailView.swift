@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WeatherDetailView: UIView {
+final class WeatherDetailView: UIView {
 
     @IBOutlet private weak var nameLabel: UILabel!
     @IBOutlet private weak var valueLabel: UILabel!

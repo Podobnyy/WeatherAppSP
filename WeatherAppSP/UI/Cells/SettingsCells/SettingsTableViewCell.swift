@@ -11,7 +11,7 @@ protocol SettingsTableViewCellDelegate: AnyObject {
     func settingsTableViewCell(cell: SettingsTableViewCell, selectedValue: Int)
 }
 
-class SettingsTableViewCell: UITableViewCell {
+final class SettingsTableViewCell: UITableViewCell {
 
     weak var delegate: SettingsTableViewCellDelegate?
 

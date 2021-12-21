@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ForecastCollectionViewCell: UICollectionViewCell {
+final class ForecastCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet private weak var timeLabel: UILabel!
     @IBOutlet private weak var tempLabel: UILabel!

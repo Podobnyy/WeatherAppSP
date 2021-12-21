@@ -13,7 +13,7 @@ enum ForecastDayKey: String {
     case weatherIcon
 }
 
-class ForecastDayModel: NSObject, NSCoding {
+final class ForecastDayModel: NSObject, NSCoding {
 
     let day: String
     let temp: Double

@@ -11,7 +11,7 @@ enum DataKey: String {
     case forecastDays
 }
 
-class UserDataManager {
+final class UserDataManager {
 
     static let shared = UserDataManager()
 

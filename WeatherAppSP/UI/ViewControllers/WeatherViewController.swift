@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WeatherViewController: BaseViewController {
+final class WeatherViewController: BaseViewController {
 
     @IBOutlet private weak var upperStackView: UIStackView!
     @IBOutlet private weak var nameLabel: UILabel!

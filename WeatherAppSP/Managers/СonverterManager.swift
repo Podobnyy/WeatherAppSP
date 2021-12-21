@@ -7,7 +7,7 @@
 
 import Foundation
 
-class СonverterManager {
+final class СonverterManager {
 
     static let shared = СonverterManager()
 
@@ -15,7 +15,7 @@ class СonverterManager {
 
     private init() {}
 
-    func getTwelveHourFromTwentyFourHour(twentyFourHour: Int) -> String {
+    func getTwelveHourFromTwentyFourHour(_ twentyFourHour: Int) -> String {
         var result = ""
 
         switch twentyFourHour {
@@ -29,7 +29,7 @@ class СonverterManager {
         return result
     }
 
-    func getTwelveHourFromTwentyFourHourWithMinutes(twentyFourHour: String) -> String {
+    func getTwelveHourFromTwentyFourHourWithMinutes(_ twentyFourHour: String) -> String {
         let indexStart = twentyFourHour.index(twentyFourHour.startIndex, offsetBy: 2)
         let hourTime = Int(String(twentyFourHour[..<indexStart])) ?? 0
         var newHourTime = ""
@@ -53,11 +53,11 @@ class СonverterManager {
         return newHourTime + String(twentyFourHour[indexStart..<indexEnd]) + amPm
     }
 
-    func getFahrenheitFromCelsius(celsius: Double) -> Double {
+    func getFahrenheitFromСelsius(_ celsius: Double) -> Double {
         return ((celsius * 9 / 5) + 32)
     }
 
-    func getFootSecondFromMetreSecond(metreSecond: Double) -> Double {
+    func getFootSecondFromMetreSecond(_ metreSecond: Double) -> Double {
         return metreSecond * 3.28084
     }
 }

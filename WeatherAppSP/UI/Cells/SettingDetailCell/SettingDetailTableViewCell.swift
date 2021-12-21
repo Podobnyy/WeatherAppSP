@@ -11,7 +11,7 @@ protocol SettingDetailTableViewCellDelegate: AnyObject {
     func settingDetailTableViewCell(_ cell: SettingDetailTableViewCell, didSwitchSettingTo: Bool)
 }
 
-class SettingDetailTableViewCell: UITableViewCell {
+final class SettingDetailTableViewCell: UITableViewCell {
 
     weak var delegate: SettingDetailTableViewCellDelegate?
 

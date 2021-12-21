@@ -9,7 +9,7 @@ import Foundation
 
 typealias CityLoadComplitionalBlock = (_ result: CityWeather?) -> Void
 
-class NetworkManager {
+final class NetworkManager {
     private let beginApiForCity = "https://api.openweathermap.org/data/2.5/forecast?units=metric&q="
     private let apiKey = "837e4c533ab63ecab027461450b08c1d"
 

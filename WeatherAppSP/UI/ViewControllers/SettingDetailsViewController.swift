@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SettingDetailsViewController: BaseViewController {
+final class SettingDetailsViewController: BaseViewController {
 
     @IBOutlet private weak var tableView: UITableView!
 

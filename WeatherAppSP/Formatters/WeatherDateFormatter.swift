@@ -7,7 +7,7 @@
 
 import Foundation
 
-class WeatherDateFormatter {
+final class WeatherDateFormatter {
 
     static let shared = WeatherDateFormatter()
 

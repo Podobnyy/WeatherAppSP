@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ForecastViewController: BaseViewController {
+final class ForecastViewController: BaseViewController {
 
     @IBOutlet private weak var tableView: UITableView!
 
@@ -23,7 +23,7 @@ class ForecastViewController: BaseViewController {
         startViewScreen(title: "Forecast Days")
         setupTableView()
 
-        tableViewDataSource = userDataManager.getForecastDaysFromUserDefaults() ?? [ForecastDayModel]()
+        reloadTableViewDataSource()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -36,6 +36,11 @@ class ForecastViewController: BaseViewController {
         tableView.dataSource = self
 
         tableView.register(cell: ForecastDayTableViewCell.self)
+    }
+
+    private func reloadTableViewDataSource() {
+        guard let savedForecastDays = userDataManager.getForecastDaysFromUserDefaults() else { return }
+        tableViewDataSource = savedForecastDays
     }
 }
 
@@ -66,8 +71,7 @@ extension ForecastViewController: UITableViewDataSource {
 extension ForecastViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let width = tableView.frame.size.width
-        return width / Constants.aspectRatio
+        return tableView.frame.size.width / Constants.aspectRatio
     }
 }
 
