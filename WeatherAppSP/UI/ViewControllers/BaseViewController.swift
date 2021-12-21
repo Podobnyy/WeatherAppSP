@@ -17,6 +17,5 @@ class BaseViewController: UIViewController {
 
     func startViewScreen(title: String) {
         self.title = title
-        self.tabBarItem.image = UIImage(named: title)
     }
 }

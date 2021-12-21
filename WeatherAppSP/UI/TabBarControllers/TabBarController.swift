@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TabBarController: UITabBarController {
+final class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -16,14 +16,14 @@ class TabBarController: UITabBarController {
         tabBar.layer.borderWidth = 0.5
         tabBar.layer.borderColor = UIColor.lightGray.cgColor
 
-        guard let items = self.tabBar.items else { return }
+        guard let items = tabBar.items else { return }
 
-        let tabBarItems = ["Weather", "Settings"]
+        let tabBarTitleItems = ["Weather", "Forecast Days", "Settings"]
+        let tabBarImageItems = ["Weather", "Calendar", "Settings"]
 
-        for index in 0..<items.count {
-            items[index].title = tabBarItems[index]
-            items[index].image = UIImage(named: tabBarItems[index])
+        items.enumerated().forEach {
+            $1.title = tabBarTitleItems[$0]
+            $1.image = UIImage(named: tabBarImageItems[$0])
         }
-
     }
 }

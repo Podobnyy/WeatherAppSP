@@ -22,11 +22,13 @@ enum Distance: String, CaseIterable {
     case mile = "mile"
 }
 
-class SettingsManager: NSObject, NSCoding {
+final class SettingsManager: NSObject, NSCoding {
 
     static let shared = SettingsManager()
 
     private override init() {}
+
+    private let converterManager = СonverterManager.shared
 
     private var valueHour = Hour.twentyFour
     private var valueUnit = Unit.celsius
@@ -57,37 +59,51 @@ class SettingsManager: NSObject, NSCoding {
                                             as? String ?? "")) ?? .kilometre
     }
 
+    // MARK: - func for Converter Hour/Unit/Distance
+    func getHourSelectedFormat(hourTwentyFour: String) -> String {
+        switch getValueHour() {
+        case .twelve: return String(converterManager.getTwelveHourFromTwentyFourHour(Int(hourTwentyFour) ?? 0))
+        case .twentyFour:
+            return hourTwentyFour
+        }
+    }
+
+    func getHourWithMinutesSelectedFormat(hourTwentyFour: String) -> String {
+        switch getValueHour() {
+        case .twelve: return converterManager.getTwelveHourFromTwentyFourHourWithMinutes(hourTwentyFour)
+        case .twentyFour: return hourTwentyFour
+        }
+    }
+
+    func getUnitSelectedFormat(celsius: Double) -> String {
+        switch getValueUnit() {
+        case .celsius: return "\(Int(round(celsius)))°C"
+        case .fahrenheit: return "\(Int(round(converterManager.getFahrenheitFromСelsius(celsius))))°F"
+        }
+    }
+
+    func getDistanceSelectedFormat(metre: Double) -> String {
+        switch getValueDistance() {
+        case .kilometre: return "\(Int(round(metre)))m/s"
+        case .mile: return "\(Int(round(converterManager.getFootSecondFromMetreSecond(metre))))ft/s"
+        }
+    }
+
     // MARK: - GET funcs
     func getValueHour() -> Hour {
-        if let value = userDefaults.getValueHour() {
-            return value
-        } else {
-            return valueHour
-        }
+        return userDefaults.getValueHour() ?? valueHour
     }
 
     func getValueUnit() -> Unit {
-        if let value = userDefaults.getValueUnit() {
-            return value
-        } else {
-            return valueUnit
-        }
+        return userDefaults.getValueUnit() ?? valueUnit
     }
 
     func getValueDistance() -> Distance {
-        if let value = userDefaults.getValueDistance() {
-            return value
-        } else {
-            return valueDistance
-        }
+        return userDefaults.getValueDistance() ?? valueDistance
     }
 
     func getSettingDetails() -> [SettingDetailsModel] {
-        if let details = userDefaults.getSettingDetails() {
-            return details
-        } else {
-            return settingDetails
-        }
+        return userDefaults.getSettingDetails() ?? settingDetails
     }
 
     // MARK: - SET funcs

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SettingsDetailsTableViewCell: UITableViewCell {
+final class SettingsDetailsTableViewCell: UITableViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
 

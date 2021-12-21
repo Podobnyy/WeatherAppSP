@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WeatherViewController: BaseViewController {
+final class WeatherViewController: BaseViewController {
 
     @IBOutlet private weak var upperStackView: UIStackView!
     @IBOutlet private weak var nameLabel: UILabel!
@@ -38,7 +38,7 @@ class WeatherViewController: BaseViewController {
     private let heightCellLessCollection = 0.5
 
     private let settingsManager = SettingsManager.shared
-    private let converterManager = СonverterManager.shared
+    private let userDataManager = UserDataManager.shared
     private let weatherDateFormatter = WeatherDateFormatter.shared
 
     override func viewDidLoad() {
@@ -154,6 +154,8 @@ class WeatherViewController: BaseViewController {
                 self?.forecastDataSource = cityWeather.forecasts
                 self?.forecastCollectionView.reloadData()
 
+                self?.saveForecastDays(forecasts: cityWeather.forecasts)
+
                 self?.setupDetailStackView(cityWeather: cityWeather)
 
                 self?.stopAllActivityIndicators()
@@ -176,12 +178,28 @@ class WeatherViewController: BaseViewController {
     }
 
     private func reloadDataFromUpperStackView(cityWeather: CityWeather) {
-        tempLabel.text = getUnitSelectedFormat(celsius: cityWeather.temp)
+        tempLabel.text = settingsManager.getUnitSelectedFormat(celsius: cityWeather.temp)
 
-        sunriseLabel.text = getHourWithMinutesSelectedFormat(hourTwentyFour:
+        sunriseLabel.text = settingsManager.getHourWithMinutesSelectedFormat(hourTwentyFour:
                                     weatherDateFormatter.getHourWithMinutesStringFromDate(date: cityWeather.sunrise))
-        sunsetLabel.text = getHourWithMinutesSelectedFormat(hourTwentyFour:
+        sunsetLabel.text = settingsManager.getHourWithMinutesSelectedFormat(hourTwentyFour:
                                     weatherDateFormatter.getHourWithMinutesStringFromDate(date: cityWeather.sunset))
+    }
+
+    // MARK: - save ForecastDays in
+    private func saveForecastDays(forecasts: [Forecast]) {
+        var forecastDays = [ForecastDayModel]()
+
+        forecasts.forEach {
+            let hour = weatherDateFormatter.getHourStringFromDate(date: $0.time)
+            if hour.elementsEqual("11") {
+                let forecastDay = ForecastDayModel(day: weatherDateFormatter.getDayStringFromDate(date: $0.time),
+                                                   temp: $0.temp,
+                                                   weatherIcon: $0.weatherDescription)
+                forecastDays.append(forecastDay)
+            }
+        }
+        userDataManager.saveForecastDaysInUserDefaults(forecastDays: forecastDays)
     }
 
     // MARK: - func for DetailStackView
@@ -241,10 +259,10 @@ class WeatherViewController: BaseViewController {
         var valueParameter = ""
         switch nameParameter {
         case "Humidity": valueParameter = String(cityWeather.humidity) + "%"
-        case "Wind Speed": valueParameter = getDistanceSelectedFormat(metre: cityWeather.windSpeed)
-        case "Min Temp": valueParameter = getUnitSelectedFormat(celsius: cityWeather.tempMin)
-        case "Max Temp": valueParameter = getUnitSelectedFormat(celsius: cityWeather.tempMax)
-        case "Feels Like": valueParameter = getUnitSelectedFormat(celsius: cityWeather.feelsLike)
+        case "Wind Speed": valueParameter = settingsManager.getDistanceSelectedFormat(metre: cityWeather.windSpeed)
+        case "Min Temp": valueParameter = settingsManager.getUnitSelectedFormat(celsius: cityWeather.tempMin)
+        case "Max Temp": valueParameter = settingsManager.getUnitSelectedFormat(celsius: cityWeather.tempMax)
+        case "Feels Like": valueParameter = settingsManager.getUnitSelectedFormat(celsius: cityWeather.feelsLike)
         case "Pressure": valueParameter = String(Int(round(cityWeather.pressure)))
         default: break
         }
@@ -286,36 +304,6 @@ class WeatherViewController: BaseViewController {
             break
         }
     }
-
-    // MARK: - func for Converter Hour/Unit/Distance
-    private func getHourSelectedFormat(hourTwentyFour: String) -> String {
-        switch settingsManager.getValueHour() {
-        case .twelve: return String(converterManager.getTwelveHourFromTwentyFourHour(twentyFourHour:
-                                                                                        Int(hourTwentyFour) ?? 0))
-        case .twentyFour: return hourTwentyFour
-        }
-    }
-
-    private func getHourWithMinutesSelectedFormat(hourTwentyFour: String) -> String {
-        switch settingsManager.getValueHour() {
-        case .twelve: return converterManager.getTwelveHourFromTwentyFourHourWithMinutes(twentyFourHour: hourTwentyFour)
-        case .twentyFour: return hourTwentyFour
-        }
-    }
-
-    private func getUnitSelectedFormat(celsius: Double) -> String {
-        switch settingsManager.getValueUnit() {
-        case .celsius: return "\(Int(round(celsius)))°C"
-        case .fahrenheit: return "\(Int(round(converterManager.getFahrenheitFromCelsius(celsius: celsius))))°F"
-        }
-    }
-
-    private func getDistanceSelectedFormat(metre: Double) -> String {
-        switch settingsManager.getValueDistance() {
-        case .kilometre: return "\(Int(round(metre)))m/s"
-        case .mile: return "\(Int(round(converterManager.getFootSecondFromMetreSecond(metreSecond: metre))))ft/s"
-        }
-    }
 }
 
 // MARK: - UICollectionViewDataSource
@@ -334,8 +322,8 @@ extension WeatherViewController: UICollectionViewDataSource {
         let cell: ForecastCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
 
         var forecastViewModel = ForecastViewModel(forecast: forecastDataSource[indexPath.row])
-        forecastViewModel.time = getHourSelectedFormat(hourTwentyFour: forecastViewModel.time)
-        forecastViewModel.temp = getUnitSelectedFormat(celsius: forecastDataSource[indexPath.row].temp)
+        forecastViewModel.time = settingsManager.getHourSelectedFormat(hourTwentyFour: forecastViewModel.time)
+        forecastViewModel.temp = settingsManager.getUnitSelectedFormat(celsius: forecastDataSource[indexPath.row].temp)
 
         cell.setup(forecastViewModel: forecastViewModel)
         return cell

@@ -14,7 +14,7 @@ enum SettingsKey: String {
     case settingDetails
 }
 
-class UserSettings {
+final class UserSettings {
 
     static let shared = UserSettings()
 

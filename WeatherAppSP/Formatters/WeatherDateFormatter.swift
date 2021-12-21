@@ -7,7 +7,7 @@
 
 import Foundation
 
-class WeatherDateFormatter {
+final class WeatherDateFormatter {
 
     static let shared = WeatherDateFormatter()
 
@@ -15,8 +15,15 @@ class WeatherDateFormatter {
 
     let formatter = DateFormatter()
 
+    func getDayStringFromDate(date: Date) -> String {
+        formatter.setLocalizedDateFormatFromTemplate("EEEE")
+        formatter.locale = Locale(identifier: "en_US")
+        return formatter.string(from: date)
+    }
+
     func getDateStringFromDate(date: Date) -> String {
         formatter.setLocalizedDateFormatFromTemplate("EEEEdMMMMyyyy")
+        formatter.locale = Locale(identifier: "en_US")
         return formatter.string(from: date)
     }
 
