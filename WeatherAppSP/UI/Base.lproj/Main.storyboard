@@ -29,11 +29,10 @@
                                     <constraint firstAttribute="height" constant="50" id="PsB-8c-SBC"/>
                                     <constraint firstAttribute="width" secondItem="H12-EE-cT8" secondAttribute="height" id="wrE-mw-0ia"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="+">
-                                    <fontDescription key="titleFontDescription" type="system" pointSize="40"/>
-                                </buttonConfiguration>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="+"/>
                                 <connections>
                                     <action selector="clickAddButton:" destination="a8b-gX-B7l" eventType="touchUpInside" id="xgl-6r-XFP"/>
                                 </connections>

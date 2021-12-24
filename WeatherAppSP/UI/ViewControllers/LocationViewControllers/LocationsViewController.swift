@@ -70,7 +70,8 @@ final class LocationsViewController: BaseViewController {
         // TODO: remove Strings
         let storyboard = UIStoryboard(name: "AddLocationViewController", bundle: nil)
         let addLocationVC = storyboard.instantiateViewController(withIdentifier: "AddLocationViewController")
-        self.present(addLocationVC, animated: true)
+        let navigationController = UINavigationController(rootViewController: addLocationVC)
+        self.present(navigationController, animated: true)
     }
 
 }
