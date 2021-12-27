@@ -8,6 +8,10 @@
 import UIKit
 import MapKit
 
+protocol HandleMapSearch: AnyObject {
+    func dropPinZoomIn(placemark: MKPlacemark)
+}
+
 final class LocationSearchViewController: BaseViewController {
 
     @IBOutlet private weak var tableView: UITableView!
@@ -15,10 +19,13 @@ final class LocationSearchViewController: BaseViewController {
     var matchingItems: [MKMapItem] = []
     var mapView: MKMapView?
 
+    weak var handleMapSearchDelegate: HandleMapSearch?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.dataSource = self
+        tableView.delegate = self
     }
 }
 
@@ -43,7 +50,7 @@ extension LocationSearchViewController: UISearchResultsUpdating {
     }
 }
 
-// MARK: - extension Table View Data Source
+// MARK: - extension UITableViewDataSource
 extension LocationSearchViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -59,5 +66,14 @@ extension LocationSearchViewController: UITableViewDataSource {
         cell.textLabel?.text = selectedItem.name
         cell.detailTextLabel?.text = selectedItem.title
         return cell
+    }
+}
+
+// MARK: - extension
+extension LocationSearchViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedItem = matchingItems[indexPath.row].placemark
+        handleMapSearchDelegate?.dropPinZoomIn(placemark: selectedItem)
+        dismiss(animated: true, completion: nil)
     }
 }

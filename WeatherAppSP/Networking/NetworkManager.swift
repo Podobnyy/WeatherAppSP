@@ -12,9 +12,9 @@ typealias ForecastCityLoadComplitionalBlock = (_ result: CityWeather?) -> Void
 
 final class NetworkManager {
     private let beginApi = "https://api.openweathermap.org/data/2.5/"
-    private let apiForForecastCity = "forecast"
-    private let apiForCurrentWeatherCity = "weather"
-    private let apiSettings = "?units=metric&q="
+    private let apiForForecastCity = "forecast?"
+    private let apiForCurrentWeatherCity = "weather?"
+    private let apiSettings = "units=metric&"
     private let apiKey = "837e4c533ab63ecab027461450b08c1d"
 
     private let session = URLSession.shared
@@ -24,9 +24,13 @@ final class NetworkManager {
 
     private init() {}
 
-    // MARK: - For Current Weather
-    func callCurrentWeatherRequest(cityNameString: String, completion: @escaping CurrentWeatherLoadComplitionalBlock) {
-        let urlString = beginApi + apiForCurrentWeatherCity + apiSettings + cityNameString + "&appid=\(apiKey)"
+    // MARK: - Call Current Weather Request
+    func callCurrentWeatherRequest(location: LocationModel, completion: @escaping CurrentWeatherLoadComplitionalBlock) {
+
+        let urlString = beginApi + apiForCurrentWeatherCity + apiSettings +
+                        "lat=\(location.latitude)&lon=\(location.longitude)" +
+                        "&appid=\(apiKey)"
+
         guard let url = URL(string: urlString) else { return }
 
         session.dataTask(with: url) { (data, _, error) in
@@ -56,7 +60,7 @@ final class NetworkManager {
     // MARK: - For Forecast City
     func callForecastCityWeatherRequest(cityNameString: String,
                                         completion: @escaping ForecastCityLoadComplitionalBlock ) {
-        let urlString = beginApi + apiForForecastCity + apiSettings + cityNameString + "&appid=\(apiKey)"
+        let urlString = beginApi + apiForForecastCity + apiSettings + "q=\(cityNameString)" + "&appid=\(apiKey)"
         guard let url = URL(string: urlString) else { return }
 
         session.dataTask(with: url) { (data, _, error) in

@@ -8,21 +8,31 @@
 import UIKit
 import MapKit
 
+protocol AddLocationViewControllerDelegate: AnyObject {
+    func addLocationViewController(location: LocationModel)
+}
+
 final class AddLocationViewController: BaseViewController {
 
     @IBOutlet private weak var mapView: MKMapView!
 
+    weak var delegate: AddLocationViewControllerDelegate?
+
+    let locationManager = CLLocationManager()
     var resultSearchController: UISearchController?
+
+    var selectedPin: MKPlacemark?
+    var selectedLocation: LocationModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupNavigationBar()
 
+        setupLocationManager()
         setupLocationSearchTableVC()
         setupSearchBar()
         setupResultSearchController()
-//        locationSearchViewController.mapView = mapView
 
         setupLongPressGesture()
     }
@@ -45,10 +55,11 @@ final class AddLocationViewController: BaseViewController {
         navigationItem.rightBarButtonItem = right
     }
 
-    private func changeSaveBarButtonItemStatus() {
-        guard let right = navigationItem.rightBarButtonItem else { return }
-
-        right.isEnabled = !right.isEnabled
+    private func setupLocationManager() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestLocation()
     }
 
     private func setupLocationSearchTableVC() {
@@ -61,6 +72,8 @@ final class AddLocationViewController: BaseViewController {
         resultSearchController?.searchResultsUpdater = locationSearchViewController
 
         locationSearchViewController.mapView = mapView
+
+        locationSearchViewController.handleMapSearchDelegate = self
     }
 
     private func setupSearchBar() {
@@ -80,8 +93,21 @@ final class AddLocationViewController: BaseViewController {
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPress))
         longPressGesture.minimumPressDuration = 1
         longPressGesture.delaysTouchesBegan = true
-        longPressGesture.delegate = self
         self.mapView.addGestureRecognizer(longPressGesture)
+    }
+
+    private func updateSelectedLocation(coordinate: CLLocationCoordinate2D) {
+        let location = LocationModel.init(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        selectedLocation = location
+        isSelectedLocation()
+    }
+
+    private func isSelectedLocation() {
+        guard let right = navigationItem.rightBarButtonItem else { return }
+
+        if (right.isEnabled == false) && (selectedLocation != nil) {
+            right.isEnabled = true
+        }
     }
 
     // MARK: - @objc funcs
@@ -92,9 +118,8 @@ final class AddLocationViewController: BaseViewController {
             let touchPoin = gestureRecognizer.location(in: mapView)
 
             let touchMapCoordinate = mapView.convert(touchPoin, toCoordinateFrom: mapView)
-            print("touchMapCoordinate: \(touchMapCoordinate)")
 
-            // TODO: work with CLLocationCoordinate2D
+            dropPinZoomIn(placemark: MKPlacemark(coordinate: touchMapCoordinate))
         }
     }
 
@@ -103,12 +128,53 @@ final class AddLocationViewController: BaseViewController {
     }
 
     @objc private func clickSaveBarButtonItem() {
-        // TODO: add func Save location
+        guard let selectedLocation = selectedLocation else { return }
+
+        delegate?.addLocationViewController(location: selectedLocation)
         self.dismiss(animated: true, completion: nil)
     }
 }
 
-// MARK: - UIGestureRecognizerDelegate
-extension AddLocationViewController: UIGestureRecognizerDelegate {
+// MARK: CLLocationManagerDelegate
+extension AddLocationViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedWhenInUse {
+            locationManager.requestLocation()
+        }
+    }
 
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first {
+            let span = MKCoordinateSpan(latitudeDelta: Constants.sizeSpan, longitudeDelta: Constants.sizeSpan)
+            let region = MKCoordinateRegion(center: location.coordinate, span: span)
+            mapView.setRegion(region, animated: true)
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("error:: (error)")
+    }
+}
+
+// MARK: - HandleMapSearch
+extension AddLocationViewController: HandleMapSearch {
+
+    func dropPinZoomIn(placemark: MKPlacemark) {
+        selectedPin = placemark                         // cache the pin
+        mapView.removeAnnotations(mapView.annotations)  // clear existing pins
+
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = placemark.coordinate
+        annotation.title = placemark.name
+        if let city = placemark.locality, let state = placemark.administrativeArea {
+            annotation.subtitle = city + ", " + state
+        }
+        mapView.addAnnotation(annotation)
+
+        let span = MKCoordinateSpan(latitudeDelta: Constants.sizeSpan, longitudeDelta: Constants.sizeSpan)
+        let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
+        mapView.setRegion(region, animated: true)
+
+        updateSelectedLocation(coordinate: placemark.coordinate)
+    }
 }

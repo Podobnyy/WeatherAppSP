@@ -17,5 +17,7 @@ final class LocationTableViewCell: UITableViewCell {
         nameLabel.text = locationViewModel.name
         tempLabel.text = locationViewModel.temp
         weatherIconImage.image = locationViewModel.weatherIcon
+
+//        LabelFormatter.shared.setupLabelSizeFont(label: nameLabel)
     }
 }

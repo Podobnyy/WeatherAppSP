@@ -13,7 +13,7 @@ final class LocationsViewController: BaseViewController {
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var addButton: UIButton!
 
-    private var cityArray = [String]()
+    private var locationsArray = [LocationModel]()
     private var tableViewDataSource = [CurrentWeatherModel]()
 
     private let imageWeather = ImageWeather.shared
@@ -26,7 +26,7 @@ final class LocationsViewController: BaseViewController {
 
         setupTableView()
         setupTableViewDataSource()
-        loadData()
+        loadDataAllLocations()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -48,19 +48,25 @@ final class LocationsViewController: BaseViewController {
     }
 
     private func setupTableViewDataSource() {
-        cityArray = ["Kharkov", "Kyiv", "Dnipro"]
+        locationsArray = [LocationModel(latitude: 49.9903398, longitude: 36.2326905),
+                          LocationModel(latitude: 50.4461248, longitude: 30.5214979),
+                          LocationModel(latitude: 48.4671206, longitude: 35.0405817)]
     }
 
     // MARK: - Downloading data from the internet (NetworkManager)
-    private func loadData() {
-        cityArray.forEach {
-            networkManager.callCurrentWeatherRequest(cityNameString: $0) { [weak self] (currentWeather) in
-                guard let currentWeather = currentWeather else { return }
+    private func loadDataAllLocations() {
+        locationsArray.forEach {
+            loadDataOneLocation(location: $0)
+        }
+    }
 
-                DispatchQueue.main.sync {
-                    self?.tableViewDataSource.append(currentWeather)
-                    self?.tableView.reloadData()
-                }
+    private func loadDataOneLocation(location: LocationModel) {
+        networkManager.callCurrentWeatherRequest(location: location) { [weak self] (currentWeather) in
+            guard let currentWeather = currentWeather else { return }
+
+            DispatchQueue.main.sync {
+                self?.tableViewDataSource.append(currentWeather)
+                self?.tableView.reloadData()
             }
         }
     }
@@ -69,7 +75,11 @@ final class LocationsViewController: BaseViewController {
     @IBAction func clickAddButton(_ sender: UIButton) {
         // TODO: remove Strings
         let storyboard = UIStoryboard(name: "AddLocationViewController", bundle: nil)
-        let addLocationVC = storyboard.instantiateViewController(withIdentifier: "AddLocationViewController")
+
+        guard let addLocationVC = storyboard.instantiateViewController(
+            withIdentifier: "AddLocationViewController") as? AddLocationViewController else { return }
+
+        addLocationVC.delegate = self
         let navigationController = UINavigationController(rootViewController: addLocationVC)
         self.present(navigationController, animated: true)
     }
@@ -107,6 +117,14 @@ extension LocationsViewController: UITableViewDelegate {
     }
 }
 
-enum Constants {
-    static let aspectRatioTableViewCells: CGFloat = 414 / 80
+// MARK: - AddLocationViewControllerDelegate
+extension LocationsViewController: AddLocationViewControllerDelegate {
+
+    func addLocationViewController(location: LocationModel) {
+        locationsArray.append(location)
+        loadDataOneLocation(location: location)
+    }
 }
+
+// TODO: load Locations from UserDefaults
+// TODO: Save new Location to UserDefaults
