@@ -1,10 +1,3 @@
-//
-//  ForecastViewController.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 20.12.2021.
-//
-
 import UIKit
 
 final class ForecastViewController: BaseViewController {
@@ -71,6 +64,6 @@ extension ForecastViewController: UITableViewDataSource {
 extension ForecastViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return tableView.frame.size.width / Constants.aspectRatioTableViewCells
+        return tableView.frame.size.width / TableCellViewConstants.tableViewCellHeightAspectRatio
     }
 }

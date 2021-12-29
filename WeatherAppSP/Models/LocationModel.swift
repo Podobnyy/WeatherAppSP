@@ -1,10 +1,3 @@
-//
-//  LocationModel.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 27.12.2021.
-//
-
 import Foundation
 
 struct LocationModel {
@@ -12,7 +5,7 @@ struct LocationModel {
     let latitude: Double
     let longitude: Double
 
-    let name: String?
+    let name: String?   // TODO: geocode APPLE  https://developer.apple.com/documentation/corelocation/clgeocoder
     let temp: Double?
     let iconString: String?
 

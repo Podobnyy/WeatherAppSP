@@ -34,7 +34,7 @@
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="+"/>
                                 <connections>
-                                    <action selector="clickAddButton:" destination="a8b-gX-B7l" eventType="touchUpInside" id="xgl-6r-XFP"/>
+                                    <action selector="clickAddButton" destination="a8b-gX-B7l" eventType="touchUpInside" id="pWd-dZ-aJ7"/>
                                 </connections>
                             </button>
                         </subviews>

@@ -1,11 +1,3 @@
-//
-//  LocationsViewController.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 21.12.2021.
-//
-
-import Foundation
 import UIKit
 
 final class LocationsViewController: BaseViewController {
@@ -26,7 +18,7 @@ final class LocationsViewController: BaseViewController {
 
         setupTableView()
         setupTableViewDataSource()
-        loadDataAllLocations()
+        loadWeatherDataForLocationByAllLocations()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -54,13 +46,13 @@ final class LocationsViewController: BaseViewController {
     }
 
     // MARK: - Downloading data from the internet (NetworkManager)
-    private func loadDataAllLocations() {
+    private func loadWeatherDataForLocationByAllLocations() {
         locationsArray.forEach {
-            loadDataOneLocation(location: $0)
+            loadWeatherDataForLocation(location: $0)
         }
     }
 
-    private func loadDataOneLocation(location: LocationModel) {
+    private func loadWeatherDataForLocation(location: LocationModel) {
         networkManager.callCurrentWeatherRequest(location: location) { [weak self] (currentWeather) in
             guard let currentWeather = currentWeather else { return }
 
@@ -72,18 +64,15 @@ final class LocationsViewController: BaseViewController {
     }
 
     // MARK: - IBActions
-    @IBAction func clickAddButton(_ sender: UIButton) {
-        // TODO: remove Strings
-        let storyboard = UIStoryboard(name: "AddLocationViewController", bundle: nil)
+    @IBAction private func clickAddButton() {
 
-        guard let addLocationVC = storyboard.instantiateViewController(
-            withIdentifier: "AddLocationViewController") as? AddLocationViewController else { return }
+        let storyboard = UIStoryboard(name: "AddLocationViewController", bundle: nil)   // TODO: remove Strings
+        guard let addLocationVC: AddLocationViewController = storyboard.instantiateVC() else { return }
 
         addLocationVC.delegate = self
         let navigationController = UINavigationController(rootViewController: addLocationVC)
-        self.present(navigationController, animated: true)
+        present(navigationController, animated: true)
     }
-
 }
 
 // MARK: - UITableViewDataSource
@@ -109,7 +98,7 @@ extension LocationsViewController: UITableViewDataSource {
 extension LocationsViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return tableView.frame.size.width / Constants.aspectRatioTableViewCells
+        return tableView.frame.size.width / TableCellViewConstants.tableViewCellHeightAspectRatio
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -119,10 +108,10 @@ extension LocationsViewController: UITableViewDelegate {
 
 // MARK: - AddLocationViewControllerDelegate
 extension LocationsViewController: AddLocationViewControllerDelegate {
-
-    func addLocationViewController(location: LocationModel) {
+    func addLocationViewController(_ addLocationViewController: AddLocationViewController,
+                                   didAdd location: LocationModel) {
         locationsArray.append(location)
-        loadDataOneLocation(location: location)
+        loadWeatherDataForLocation(location: location)
     }
 }
 

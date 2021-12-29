@@ -1,14 +1,7 @@
-//
-//  LocationSearchViewController.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 23.12.2021.
-//
-
 import UIKit
 import MapKit
 
-protocol HandleMapSearch: AnyObject {
+protocol HandleMapSearchDelegate: AnyObject {
     func dropPinZoomIn(placemark: MKPlacemark)
 }
 
@@ -16,10 +9,10 @@ final class LocationSearchViewController: BaseViewController {
 
     @IBOutlet private weak var tableView: UITableView!
 
-    var matchingItems: [MKMapItem] = []
+    private var matchingItems: [MKMapItem] = []
     var mapView: MKMapView?
 
-    weak var handleMapSearchDelegate: HandleMapSearch?
+    weak var handleMapSearchDelegate: HandleMapSearchDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()

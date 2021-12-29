@@ -1,15 +1,9 @@
-//
-//  AddLocationViewController.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 22.12.2021.
-//
-
 import UIKit
 import MapKit
 
 protocol AddLocationViewControllerDelegate: AnyObject {
-    func addLocationViewController(location: LocationModel)
+    func addLocationViewController(_ addLocationViewController: AddLocationViewController,
+                                   didAdd location: LocationModel)
 }
 
 final class AddLocationViewController: BaseViewController {
@@ -18,11 +12,11 @@ final class AddLocationViewController: BaseViewController {
 
     weak var delegate: AddLocationViewControllerDelegate?
 
-    let locationManager = CLLocationManager()
-    var resultSearchController: UISearchController?
+    private let locationManager = CLLocationManager()
+    private var resultSearchController: UISearchController?
 
-    var selectedPin: MKPlacemark?
-    var selectedLocation: LocationModel?
+    private var selectedPin: MKPlacemark?
+    private var selectedLocation: LocationModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,17 +57,15 @@ final class AddLocationViewController: BaseViewController {
     }
 
     private func setupLocationSearchTableVC() {
-        // TODO: remove Strings
-        let storyboard = UIStoryboard(name: "LocationSearchViewController", bundle: nil)
-        guard let locationSearchViewController = storyboard.instantiateViewController(
-            withIdentifier: "LocationSearchViewController") as? LocationSearchViewController else { return }
+        let storyboard = UIStoryboard(name: "LocationSearchViewController", bundle: nil)    // TODO: remove Strings
+        guard let locationSearchVC: LocationSearchViewController = storyboard.instantiateVC() else { return }
 
-        resultSearchController = UISearchController(searchResultsController: locationSearchViewController)
-        resultSearchController?.searchResultsUpdater = locationSearchViewController
+        resultSearchController = UISearchController(searchResultsController: locationSearchVC)
+        resultSearchController?.searchResultsUpdater = locationSearchVC
 
-        locationSearchViewController.mapView = mapView
+        locationSearchVC.mapView = mapView
 
-        locationSearchViewController.handleMapSearchDelegate = self
+        locationSearchVC.handleMapSearchDelegate = self
     }
 
     private func setupSearchBar() {
@@ -97,7 +89,7 @@ final class AddLocationViewController: BaseViewController {
     }
 
     private func updateSelectedLocation(coordinate: CLLocationCoordinate2D) {
-        let location = LocationModel.init(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        let location = LocationModel(latitude: coordinate.latitude, longitude: coordinate.longitude)
         selectedLocation = location
         isSelectedLocation()
     }
@@ -130,7 +122,7 @@ final class AddLocationViewController: BaseViewController {
     @objc private func clickSaveBarButtonItem() {
         guard let selectedLocation = selectedLocation else { return }
 
-        delegate?.addLocationViewController(location: selectedLocation)
+        delegate?.addLocationViewController(self, didAdd: selectedLocation)
         self.dismiss(animated: true, completion: nil)
     }
 }
@@ -145,9 +137,7 @@ extension AddLocationViewController: CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
-            let span = MKCoordinateSpan(latitudeDelta: Constants.sizeSpan, longitudeDelta: Constants.sizeSpan)
-            let region = MKCoordinateRegion(center: location.coordinate, span: span)
-            mapView.setRegion(region, animated: true)
+            setRegionWithSpanToMap(map: mapView, coordinate: location.coordinate)
         }
     }
 
@@ -157,7 +147,7 @@ extension AddLocationViewController: CLLocationManagerDelegate {
 }
 
 // MARK: - HandleMapSearch
-extension AddLocationViewController: HandleMapSearch {
+extension AddLocationViewController: HandleMapSearchDelegate {
 
     func dropPinZoomIn(placemark: MKPlacemark) {
         selectedPin = placemark                         // cache the pin
@@ -171,10 +161,19 @@ extension AddLocationViewController: HandleMapSearch {
         }
         mapView.addAnnotation(annotation)
 
-        let span = MKCoordinateSpan(latitudeDelta: Constants.sizeSpan, longitudeDelta: Constants.sizeSpan)
-        let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
-        mapView.setRegion(region, animated: true)
+        setRegionWithSpanToMap(map: mapView, coordinate: placemark.coordinate)
 
         updateSelectedLocation(coordinate: placemark.coordinate)
     }
+}
+
+private func setRegionWithSpanToMap(map: MKMapView, coordinate: CLLocationCoordinate2D) {
+    let span = MKCoordinateSpan(latitudeDelta: Constants.sizeSpan, longitudeDelta: Constants.sizeSpan)
+    let region = MKCoordinateRegion(center: coordinate, span: span)
+    map.setRegion(region, animated: true)
+}
+
+// MARK: - Constants
+private enum Constants {
+    static let sizeSpan = 0.05
 }
