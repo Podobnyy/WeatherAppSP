@@ -1,11 +1,10 @@
-//
-//  CityWeather.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 24.11.2021.
-//
-
 import Foundation
+
+struct Forecast {
+    let time: Date
+    let temp: Double
+    let weatherDescription: String
+}
 
 struct CityWeather {
     let name: String
@@ -23,10 +22,4 @@ struct CityWeather {
     let tempMax: Double
     let feelsLike: Double
     let pressure: Double
-}
-
-struct Forecast {
-    let time: Date
-    let temp: Double
-    let weatherDescription: String
 }

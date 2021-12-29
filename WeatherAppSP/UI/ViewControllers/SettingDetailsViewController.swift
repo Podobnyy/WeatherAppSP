@@ -1,10 +1,3 @@
-//
-//  SettingDetailsViewController.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 13.12.2021.
-//
-
 import UIKit
 
 final class SettingDetailsViewController: BaseViewController {
@@ -96,9 +89,7 @@ extension SettingDetailsViewController: UITableViewDataSource {
 extension SettingDetailsViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let width = tableView.frame.size.width
-        let aspectRatio: CGFloat = 414 / 80
-        return width / aspectRatio
+        return tableView.frame.size.width / TableCellViewConstants.tableViewCellHeightAspectRatio
     }
 
     // Hide button"remove" cell

@@ -82,7 +82,7 @@ struct ImageWeather {
         if let iconString = imageDictionary[weatherDescriptionString] {
             return getImageFromString(string: iconString)
         } else {
-            return UIImage()
+            return UIImage(named: weatherDescriptionString) ?? UIImage()
         }
 
     }

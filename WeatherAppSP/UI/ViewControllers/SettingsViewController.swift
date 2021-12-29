@@ -1,10 +1,3 @@
-//
-//  SettingsViewController.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 07.12.2021.
-//
-
 import UIKit
 
 final class SettingsViewController: BaseViewController {
@@ -112,9 +105,7 @@ extension SettingsViewController: UITableViewDataSource {
 extension SettingsViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let width = tableView.frame.size.width
-        let aspectRatio: CGFloat = 414 / 80
-        return width / aspectRatio
+        return tableView.frame.size.width / TableCellViewConstants.tableViewCellHeightAspectRatio
     }
 
     // MARK: - Navigation

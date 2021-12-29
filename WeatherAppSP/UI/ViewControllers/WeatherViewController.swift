@@ -144,7 +144,7 @@ final class WeatherViewController: BaseViewController {
     private func loadData() {
         startAllActivityIndicators()
 
-        NetworkManager.shared.callCityWeatherRequest(cityNameString: "Kharkov") { [weak self] (cityWeather) in
+        NetworkManager.shared.callForecastCityWeatherRequest(cityNameString: "Kharkov") { [weak self] (cityWeather) in
             guard let cityWeather = cityWeather else { return }
 
             DispatchQueue.main.async {

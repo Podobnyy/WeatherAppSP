@@ -1,10 +1,3 @@
-//
-//  TabBarController.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 02.12.2021.
-//
-
 import UIKit
 
 final class TabBarController: UITabBarController {
@@ -18,12 +11,14 @@ final class TabBarController: UITabBarController {
 
         guard let items = tabBar.items else { return }
 
-        let tabBarTitleItems = ["Weather", "Forecast Days", "Settings"]
-        let tabBarImageItems = ["Weather", "Calendar", "Settings"]
+        let tabBarItems = [(title: "Locations", image: "location.circle.fill"),
+                           (title: "Weather", image: "Weather"),
+                           (title: "Forecast Days", image: "Calendar"),
+                           (title: "Settings", image: "Settings")]
 
         items.enumerated().forEach {
-            $1.title = tabBarTitleItems[$0]
-            $1.image = UIImage(named: tabBarImageItems[$0])
+            $1.title = tabBarItems[$0].title
+            $1.image = UIImage(named: tabBarItems[$0].image)
         }
     }
 }
