@@ -1,6 +1,9 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
+
+    var location: LocationModel?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -11,8 +14,7 @@ final class TabBarController: UITabBarController {
 
         guard let items = tabBar.items else { return }
 
-        let tabBarItems = [(title: "Locations", image: "location.circle.fill"),
-                           (title: "Weather", image: "Weather"),
+        let tabBarItems = [(title: "Weather", image: "Weather"),
                            (title: "Forecast Days", image: "Calendar"),
                            (title: "Settings", image: "Settings")]
 

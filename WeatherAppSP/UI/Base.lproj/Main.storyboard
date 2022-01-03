@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="mZ2-BM-Hkw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -11,58 +11,9 @@
     </dependencies>
     <scenes>
         <!--Item-->
-        <scene sceneID="XBo-OV-xSG">
-            <objects>
-                <viewController id="a8b-gX-B7l" customClass="LocationsViewController" customModule="WeatherAppSP" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="G7n-24-Ye3">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="GfB-8Q-GUx">
-                                <rect key="frame" x="0.0" y="44" width="414" height="687"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H12-EE-cT8">
-                                <rect key="frame" x="348" y="747" width="50" height="50"/>
-                                <color key="backgroundColor" red="0.43137254901960786" green="0.43137254901960786" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="PsB-8c-SBC"/>
-                                    <constraint firstAttribute="width" secondItem="H12-EE-cT8" secondAttribute="height" id="wrE-mw-0ia"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="+"/>
-                                <connections>
-                                    <action selector="clickAddButton" destination="a8b-gX-B7l" eventType="touchUpInside" id="pWd-dZ-aJ7"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="dIN-qR-gm5"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="GfB-8Q-GUx" firstAttribute="top" secondItem="dIN-qR-gm5" secondAttribute="top" id="G0z-hS-ZUc"/>
-                            <constraint firstItem="dIN-qR-gm5" firstAttribute="trailing" secondItem="H12-EE-cT8" secondAttribute="trailing" constant="16" id="Gc5-1a-RpP"/>
-                            <constraint firstItem="dIN-qR-gm5" firstAttribute="trailing" secondItem="GfB-8Q-GUx" secondAttribute="trailing" id="PZ5-GQ-JTF"/>
-                            <constraint firstItem="GfB-8Q-GUx" firstAttribute="leading" secondItem="dIN-qR-gm5" secondAttribute="leading" id="gEl-nZ-ADk"/>
-                            <constraint firstItem="H12-EE-cT8" firstAttribute="top" secondItem="GfB-8Q-GUx" secondAttribute="bottom" constant="16" id="gRl-8B-RBN"/>
-                            <constraint firstItem="dIN-qR-gm5" firstAttribute="bottom" secondItem="H12-EE-cT8" secondAttribute="bottom" constant="16" id="xRs-uw-mop"/>
-                        </constraints>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="luC-oH-msJ"/>
-                    <connections>
-                        <outlet property="addButton" destination="H12-EE-cT8" id="q5K-MT-TBI"/>
-                        <outlet property="tableView" destination="GfB-8Q-GUx" id="ci5-Ws-3Xu"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="d7S-8h-ZvM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3696" y="-1142"/>
-        </scene>
-        <!--Item-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="WeatherViewController" customModule="WeatherAppSP" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WeatherViewController" id="BYZ-38-t0r" customClass="WeatherViewController" customModule="WeatherAppSP" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -282,12 +233,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4754" y="-967"/>
+            <point key="canvasLocation" x="3696" y="-842"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="Xlc-6Q-MvW">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="mZ2-BM-Hkw" customClass="TabBarController" customModule="WeatherAppSP" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarController" automaticallyAdjustsScrollViewInsets="NO" id="mZ2-BM-Hkw" customClass="TabBarController" customModule="WeatherAppSP" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="woV-tp-MpX">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
@@ -295,7 +246,6 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="a8b-gX-B7l" kind="relationship" relationship="viewControllers" id="pby-gj-ZUI"/>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="f2n-oZ-41t"/>
                         <segue destination="d8g-eg-pLa" kind="relationship" relationship="viewControllers" id="ijN-Xe-sri"/>
                         <segue destination="kLQ-yf-ZwS" kind="relationship" relationship="viewControllers" id="6XW-Kc-ilG"/>
@@ -338,7 +288,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MkK-vT-zD2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4754" y="-101"/>
+            <point key="canvasLocation" x="3696" y="-101"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="Huq-lq-aPn">
@@ -373,7 +323,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VOp-Fr-tps" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3697" y="613"/>
+            <point key="canvasLocation" x="4651" y="627"/>
         </scene>
         <!--Item-->
         <scene sceneID="wyS-gz-vbu">
@@ -392,7 +342,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zKB-nM-eW0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2741" y="613"/>
+            <point key="canvasLocation" x="3696" y="627"/>
         </scene>
     </scenes>
     <resources>

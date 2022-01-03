@@ -1,10 +1,3 @@
-//
-//  WeatherViewController.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 25.11.2021.
-//
-
 import UIKit
 
 final class WeatherViewController: BaseViewController {
@@ -41,13 +34,22 @@ final class WeatherViewController: BaseViewController {
     private let userDataManager = UserDataManager.shared
     private let weatherDateFormatter = WeatherDateFormatter.shared
 
+    var location: LocationModel?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        getLocationFromTabBar()
         startViewScreen(title: "Weather")
         setupForecastCollectionView()
         addActivityIndicators()
         loadData()
+    }
+
+    private func getLocationFromTabBar() {
+        guard let tabbar: TabBarController = tabBarController as? TabBarController else { return }
+
+        location = tabbar.location
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -144,7 +146,9 @@ final class WeatherViewController: BaseViewController {
     private func loadData() {
         startAllActivityIndicators()
 
-        NetworkManager.shared.callForecastCityWeatherRequest(cityNameString: "Kharkov") { [weak self] (cityWeather) in
+        guard let location = location else { return }
+
+        NetworkManager.shared.callForecastLocationWeatherRequest(location: location) { [weak self] (cityWeather) in
             guard let cityWeather = cityWeather else { return }
 
             DispatchQueue.main.async {

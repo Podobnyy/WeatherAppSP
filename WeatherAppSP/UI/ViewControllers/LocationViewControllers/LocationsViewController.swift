@@ -99,7 +99,15 @@ extension LocationsViewController: UITableViewDelegate {
         return tableView.frame.size.width / TableCellViewConstants.tableViewCellHeightAspectRatio
     }
 
+    // MARK: - Navigation
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let tabBarController: TabBarController = mainStoryboard.instantiateVC() else { return }
+
+        tabBarController.location = listOfLocations[indexPath.row]
+        tabBarController.modalPresentationStyle = .fullScreen
+        present(tabBarController, animated: true, completion: nil)
+
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
@@ -125,11 +133,3 @@ extension LocationsViewController {
         return userDataManager.getListOfLocationsFromUserDefaults() ?? [LocationModel]()
     }
 }
-
-// TODO: Open WeatherViewController when click location on LocationsViewController
-// TODO: change main API by location (now name city)
-
-// TODO: Name location on LocationModel - get from Apple -
-// geocode APPLE  https://developer.apple.com/documentation/corelocation/clgeocoder
-
-// TODO: Show List Location when no internet
