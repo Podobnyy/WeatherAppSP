@@ -65,8 +65,7 @@ final class LocationsViewController: BaseViewController {
 
     // MARK: - IBActions
     @IBAction private func clickAddButton() {
-
-        let storyboard = UIStoryboard(name: "AddLocationViewController", bundle: nil)   // TODO: remove Strings
+        let storyboard = UIStoryboard(name: "AddLocationViewController", bundle: nil)
         guard let addLocationVC: AddLocationViewController = storyboard.instantiateVC() else { return }
 
         addLocationVC.delegate = self

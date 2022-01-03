@@ -1,10 +1,3 @@
-//
-//  LocationTableViewCell.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 21.12.2021.
-//
-
 import UIKit
 
 final class LocationTableViewCell: UITableViewCell {
@@ -17,7 +10,5 @@ final class LocationTableViewCell: UITableViewCell {
         nameLabel.text = locationViewModel.name
         tempLabel.text = locationViewModel.temp
         weatherIconImage.image = locationViewModel.weatherIcon
-
-//        LabelFormatter.shared.setupLabelSizeFont(label: nameLabel)
     }
 }
