@@ -57,7 +57,7 @@ final class AddLocationViewController: BaseViewController {
     }
 
     private func setupLocationSearchTableVC() {
-        let storyboard = UIStoryboard(name: "LocationSearchViewController", bundle: nil)    // TODO: remove Strings
+        let storyboard = UIStoryboard(name: "LocationSearchViewController", bundle: nil)
         guard let locationSearchVC: LocationSearchViewController = storyboard.instantiateVC() else { return }
 
         resultSearchController = UISearchController(searchResultsController: locationSearchVC)
