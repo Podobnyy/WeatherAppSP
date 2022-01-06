@@ -1,10 +1,3 @@
-//
-//  AppDelegate.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 23.11.2021.
-//
-
 import UIKit
 
 @main
@@ -31,3 +24,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return UIInterfaceOrientationMask.portrait
         }
 }
+
+// TODO: Name location on LocationModel - get from Apple -
+// geocode APPLE  https://developer.apple.com/documentation/corelocation/clgeocoder
+
+// TODO: Feature when will be free time:
+// - Delete location from listOfLocation (LocationsViewController) by swipe
+// - Show List Location when no internet
+// - Unboarding (first start app - meet and choose first location)

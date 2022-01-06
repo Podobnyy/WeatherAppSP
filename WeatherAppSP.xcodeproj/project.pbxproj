@@ -48,6 +48,7 @@
 		808C09702758CBF6009AF7DF /* ImageWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808C096F2758CBF6009AF7DF /* ImageWeather.swift */; };
 		808C09722758D86B009AF7DF /* WeatherDetailItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808C09712758D86B009AF7DF /* WeatherDetailItem.swift */; };
 		808C097527592F5C009AF7DF /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808C097427592F5C009AF7DF /* TabBarController.swift */; };
+		8091E53B278350450068AC76 /* LocationsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8091E53D278350450068AC76 /* LocationsViewController.storyboard */; };
 		809205A02776365C00ABF9B1 /* UISearchBar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8092059F2776365C00ABF9B1 /* UISearchBar+Extensions.swift */; };
 		809A6B14276259FA0032D06C /* СonverterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809A6B13276259FA0032D06C /* СonverterManager.swift */; };
 		809D44C92757845A00CC3586 /* ForecastCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809D44C82757845A00CC3586 /* ForecastCollectionViewCell.swift */; };
@@ -110,6 +111,7 @@
 		808C096F2758CBF6009AF7DF /* ImageWeather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWeather.swift; sourceTree = "<group>"; };
 		808C09712758D86B009AF7DF /* WeatherDetailItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDetailItem.swift; sourceTree = "<group>"; };
 		808C097427592F5C009AF7DF /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		8091E53C278350450068AC76 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LocationsViewController.storyboard; sourceTree = "<group>"; };
 		8092059F2776365C00ABF9B1 /* UISearchBar+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchBar+Extensions.swift"; sourceTree = "<group>"; };
 		809A6B13276259FA0032D06C /* СonverterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "СonverterManager.swift"; sourceTree = "<group>"; };
 		809D44C82757845A00CC3586 /* ForecastCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -300,6 +302,7 @@
 			isa = PBXGroup;
 			children = (
 				806D4FAD2771EDF000B0E78F /* LocationsViewController.swift */,
+				8091E53D278350450068AC76 /* LocationsViewController.storyboard */,
 				80ECCE7D2773209A0034AF44 /* AddLocationViewController.swift */,
 				80ECCE7F277320A50034AF44 /* AddLocationViewController.storyboard */,
 				80D79B302774C2FF00BDC93F /* LocationSearchViewController.swift */,
@@ -458,6 +461,7 @@
 				80262D82275FA7B4001A662B /* SettingsTableViewCell.xib in Resources */,
 				80EBCC81274D53F200319585 /* LaunchScreen.storyboard in Resources */,
 				806D4FB52771F84600B0E78F /* LocationTableViewCell.xib in Resources */,
+				8091E53B278350450068AC76 /* LocationsViewController.storyboard in Resources */,
 				80896BCF27677DAC00C238AE /* SettingDetailsViewController.storyboard in Resources */,
 				808B8B6F2770BF660028A83F /* ForecastDayTableViewCell.xib in Resources */,
 				80262D8A275FC08E001A662B /* SettingsDetailsTableViewCell.xib in Resources */,
@@ -572,6 +576,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		8091E53D278350450068AC76 /* LocationsViewController.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8091E53C278350450068AC76 /* Base */,
+			);
+			name = LocationsViewController.storyboard;
+			sourceTree = "<group>";
+		};
 		80EBCC7A274D53E600319585 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -715,11 +727,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WeatherAppSP/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app wants to use your location";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = LocationsViewController;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -745,11 +759,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WeatherAppSP/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app wants to use your location";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = LocationsViewController;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

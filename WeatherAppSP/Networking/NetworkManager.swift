@@ -1,10 +1,3 @@
-//
-//  NetworkManager.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 24.11.2021.
-//
-
 import Foundation
 
 typealias CurrentWeatherLoadComplitionalBlock = (_ result: CurrentWeatherModel?) -> Void
@@ -57,10 +50,12 @@ final class NetworkManager {
         return currentWeatherModel
     }
 
-    // MARK: - For Forecast City
-    func callForecastCityWeatherRequest(cityNameString: String,
-                                        completion: @escaping ForecastCityLoadComplitionalBlock ) {
-        let urlString = beginApi + apiForForecastCity + apiSettings + "q=\(cityNameString)" + "&appid=\(apiKey)"
+    // MARK: - For Forecast Location
+    func callForecastLocationWeatherRequest(location: LocationModel,
+                                            completion: @escaping ForecastCityLoadComplitionalBlock) {
+        let urlString = beginApi + apiForForecastCity + apiSettings +
+                        "lat=\(location.latitude)&lon=\(location.longitude)" +
+                        "&appid=\(apiKey)"
         guard let url = URL(string: urlString) else { return }
 
         session.dataTask(with: url) { (data, _, error) in

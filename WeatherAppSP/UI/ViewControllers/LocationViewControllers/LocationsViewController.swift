@@ -5,9 +5,10 @@ final class LocationsViewController: BaseViewController {
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var addButton: UIButton!
 
-    private var locationsArray = [LocationModel]()
+    private var listOfLocations = [LocationModel]()
     private var tableViewDataSource = [CurrentWeatherModel]()
 
+    private let userDataManager = UserDataManager.shared
     private let imageWeather = ImageWeather.shared
     private let settingsManager = SettingsManager.shared
     private let networkManager = NetworkManager.shared
@@ -15,9 +16,12 @@ final class LocationsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         startViewScreen(title: "Locations")
+        setupNavigationController()
+
+        locationIsSelected()
 
         setupTableView()
-        setupTableViewDataSource()
+        reloadListOfLocations()
         loadWeatherDataForLocationByAllLocations()
     }
 
@@ -31,6 +35,10 @@ final class LocationsViewController: BaseViewController {
         addButton.layer.cornerRadius = addButton.frame.height / 2
     }
 
+    private func setupNavigationController() {
+        navigationController?.navigationBar.isHidden = true
+    }
+
     // MARK: - TableView
     private func setupTableView() {
         tableView.dataSource = self
@@ -39,15 +47,13 @@ final class LocationsViewController: BaseViewController {
         tableView.register(cell: LocationTableViewCell.self)
     }
 
-    private func setupTableViewDataSource() {
-        locationsArray = [LocationModel(latitude: 49.9903398, longitude: 36.2326905),
-                          LocationModel(latitude: 50.4461248, longitude: 30.5214979),
-                          LocationModel(latitude: 48.4671206, longitude: 35.0405817)]
+    private func reloadListOfLocations() {
+        listOfLocations = getListOfLocationsFromUserDefaults()
     }
 
     // MARK: - Downloading data from the internet (NetworkManager)
     private func loadWeatherDataForLocationByAllLocations() {
-        locationsArray.forEach {
+            listOfLocations.forEach {
             loadWeatherDataForLocation(location: $0)
         }
     }
@@ -74,8 +80,27 @@ final class LocationsViewController: BaseViewController {
     }
 }
 
+// MARK: - Open WeatherViewController
+extension LocationsViewController {
+    
+    func locationIsSelected() {
+        if userDataManager.getSelectedLocation() != nil {
+            openLocationsViewController(animated: false)
+        }
+    }
+
+    func openLocationsViewController(animated: Bool) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let tabBarController: TabBarController = storyboard.instantiateVC() else { return }
+
+        tabBarController.location = userDataManager.getSelectedLocation()
+        navigationController?.pushViewController(tabBarController, animated: animated)
+    }
+}
+
 // MARK: - UITableViewDataSource
 extension LocationsViewController: UITableViewDataSource {
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         tableViewDataSource.count
     }
@@ -100,19 +125,33 @@ extension LocationsViewController: UITableViewDelegate {
         return tableView.frame.size.width / TableCellViewConstants.tableViewCellHeightAspectRatio
     }
 
+    // MARK: - Navigation
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        userDataManager.setSelectedLocation(listOfLocations[indexPath.row])
+        openLocationsViewController(animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
 // MARK: - AddLocationViewControllerDelegate
 extension LocationsViewController: AddLocationViewControllerDelegate {
+
     func addLocationViewController(_ addLocationViewController: AddLocationViewController,
                                    didAdd location: LocationModel) {
-        locationsArray.append(location)
+        listOfLocations.append(location)
+        setListOfLocationsInUserDefaults(listOfLocations: listOfLocations)
         loadWeatherDataForLocation(location: location)
     }
 }
 
-// TODO: load Locations from UserDefaults
-// TODO: Save new Location to UserDefaults
+// MARK: - UserDefaults
+extension LocationsViewController {
+
+    private func setListOfLocationsInUserDefaults(listOfLocations: [LocationModel]) {
+        userDataManager.setListOfLocationsInUserDefaults(listOfLocations: listOfLocations)
+    }
+
+    private func getListOfLocationsFromUserDefaults() -> [LocationModel] {
+        return userDataManager.getListOfLocationsFromUserDefaults() ?? [LocationModel]()
+    }
+}
