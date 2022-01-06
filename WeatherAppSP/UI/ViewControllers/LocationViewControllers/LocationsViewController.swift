@@ -82,6 +82,7 @@ final class LocationsViewController: BaseViewController {
 
 // MARK: - Open WeatherViewController
 extension LocationsViewController {
+    
     func locationIsSelected() {
         if userDataManager.getSelectedLocation() != nil {
             openLocationsViewController(animated: false)
@@ -99,6 +100,7 @@ extension LocationsViewController {
 
 // MARK: - UITableViewDataSource
 extension LocationsViewController: UITableViewDataSource {
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         tableViewDataSource.count
     }
@@ -133,6 +135,7 @@ extension LocationsViewController: UITableViewDelegate {
 
 // MARK: - AddLocationViewControllerDelegate
 extension LocationsViewController: AddLocationViewControllerDelegate {
+
     func addLocationViewController(_ addLocationViewController: AddLocationViewController,
                                    didAdd location: LocationModel) {
         listOfLocations.append(location)
