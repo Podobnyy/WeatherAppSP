@@ -16,6 +16,9 @@ final class LocationsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         startViewScreen(title: "Locations")
+        setupNavigationController()
+
+        locationIsSelected()
 
         setupTableView()
         reloadListOfLocations()
@@ -30,6 +33,10 @@ final class LocationsViewController: BaseViewController {
     override func startViewScreen(title: String) {
         super.startViewScreen(title: title)
         addButton.layer.cornerRadius = addButton.frame.height / 2
+    }
+
+    private func setupNavigationController() {
+        navigationController?.navigationBar.isHidden = true
     }
 
     // MARK: - TableView
@@ -73,6 +80,23 @@ final class LocationsViewController: BaseViewController {
     }
 }
 
+// MARK: - Open WeatherViewController
+extension LocationsViewController {
+    func locationIsSelected() {
+        if userDataManager.getSelectedLocation() != nil {
+            openLocationsViewController(animated: false)
+        }
+    }
+
+    func openLocationsViewController(animated: Bool) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let tabBarController: TabBarController = storyboard.instantiateVC() else { return }
+
+        tabBarController.location = userDataManager.getSelectedLocation()
+        navigationController?.pushViewController(tabBarController, animated: animated)
+    }
+}
+
 // MARK: - UITableViewDataSource
 extension LocationsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -101,13 +125,8 @@ extension LocationsViewController: UITableViewDelegate {
 
     // MARK: - Navigation
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        guard let tabBarController: TabBarController = mainStoryboard.instantiateVC() else { return }
-
-        tabBarController.location = listOfLocations[indexPath.row]
-        tabBarController.modalPresentationStyle = .fullScreen
-        present(tabBarController, animated: true, completion: nil)
-
+        userDataManager.setSelectedLocation(listOfLocations[indexPath.row])
+        openLocationsViewController(animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }

@@ -25,14 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 }
 
-// TODO: Add button locations on WeatherViewController for go to LocationsViewController
-
 // TODO: Name location on LocationModel - get from Apple -
 // geocode APPLE  https://developer.apple.com/documentation/corelocation/clgeocoder
-
-// TODO: Open start screen WeatherViewController OR LocationsViewController
-// Open WeatherViewController if location choose
-// Open LocationsViewController if location not choose
 
 // TODO: Feature when will be free time:
 // - Delete location from listOfLocation (LocationsViewController) by swipe

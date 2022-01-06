@@ -308,6 +308,11 @@ final class WeatherViewController: BaseViewController {
             break
         }
     }
+
+    @IBAction private func clickLocationButton() {
+        userDataManager.setSelectedLocation(nil)
+        navigationController?.popViewController(animated: true)
+    }
 }
 
 // MARK: - UICollectionViewDataSource

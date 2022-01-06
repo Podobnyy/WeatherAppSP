@@ -27,8 +27,21 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2gz-a9-x5z">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="69"/>
                                                 <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bd7-aj-mCC">
+                                                        <rect key="frame" x="3" y="21.5" width="26" height="26"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" secondItem="bd7-aj-mCC" secondAttribute="height" multiplier="1:1" id="4Bm-Qg-vkv"/>
+                                                            <constraint firstAttribute="width" constant="26" id="QJZ-DY-z4i"/>
+                                                        </constraints>
+                                                        <color key="tintColor" systemColor="systemGray5Color"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" image="location.circle.fill" catalog="system"/>
+                                                        <connections>
+                                                            <action selector="clickLocationButton" destination="BYZ-38-t0r" eventType="touchUpInside" id="cQF-OP-GQi"/>
+                                                        </connections>
+                                                    </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MdI-aW-Kw8">
-                                                        <rect key="frame" x="0.0" y="0.0" width="414" height="69"/>
+                                                        <rect key="frame" x="32" y="0.0" width="350" height="69"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="53"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -37,9 +50,11 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="trailing" secondItem="MdI-aW-Kw8" secondAttribute="trailing" id="V5K-ib-Heu"/>
+                                                    <constraint firstItem="bd7-aj-mCC" firstAttribute="centerY" secondItem="2gz-a9-x5z" secondAttribute="centerY" id="1UQ-Xu-jtL"/>
+                                                    <constraint firstItem="bd7-aj-mCC" firstAttribute="leading" secondItem="2gz-a9-x5z" secondAttribute="leading" constant="3" id="4Sn-Y0-uwE"/>
+                                                    <constraint firstAttribute="trailing" secondItem="MdI-aW-Kw8" secondAttribute="trailing" constant="32" id="V5K-ib-Heu"/>
                                                     <constraint firstAttribute="bottom" secondItem="MdI-aW-Kw8" secondAttribute="bottom" id="dex-vk-Bgp"/>
-                                                    <constraint firstItem="MdI-aW-Kw8" firstAttribute="leading" secondItem="2gz-a9-x5z" secondAttribute="leading" id="pa7-i1-Lvw"/>
+                                                    <constraint firstItem="MdI-aW-Kw8" firstAttribute="leading" secondItem="2gz-a9-x5z" secondAttribute="leading" constant="32" id="pa7-i1-Lvw"/>
                                                     <constraint firstItem="MdI-aW-Kw8" firstAttribute="top" secondItem="2gz-a9-x5z" secondAttribute="top" id="uZa-M7-xbj"/>
                                                 </constraints>
                                             </view>
@@ -233,7 +248,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3696" y="-842"/>
+            <point key="canvasLocation" x="3695.652173913044" y="-842.41071428571422"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="Xlc-6Q-MvW">
@@ -346,10 +361,14 @@
         </scene>
     </scenes>
     <resources>
+        <image name="location.circle.fill" catalog="system" width="128" height="121"/>
         <image name="sunrise.fill" catalog="system" width="128" height="97"/>
         <image name="sunset.fill" catalog="system" width="128" height="97"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray5Color">
+            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

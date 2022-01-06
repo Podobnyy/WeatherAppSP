@@ -3,6 +3,7 @@ import Foundation
 enum DataKey: String {
     case forecastDays
     case listOfLocations
+    case selectedLocation
 }
 
 final class UserDataManager {
@@ -28,6 +29,14 @@ final class UserDataManager {
         return decodedModel
     }
 
+    func getSelectedLocation() -> LocationModel? {
+        guard let savedDate = defaults.object(forKey: DataKey.selectedLocation.rawValue) as? Data, let decodedModel =
+                try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(savedDate) as? LocationModel else {
+                    return nil
+                }
+        return decodedModel
+    }
+
     // MARK: - Save in UserDefaults
     func saveForecastDaysInUserDefaults(forecastDays: [ForecastDayModel]) {
         guard let savedData = try? NSKeyedArchiver.archivedData(withRootObject: forecastDays,
@@ -39,5 +48,11 @@ final class UserDataManager {
         guard let savedData = try? NSKeyedArchiver.archivedData(withRootObject: listOfLocations,
                                                                 requiringSecureCoding: false) else { return }
         defaults.set(savedData, forKey: DataKey.listOfLocations.rawValue)
+    }
+
+    func setSelectedLocation(_ selectedLocation: LocationModel?) {
+        guard let savedData = try? NSKeyedArchiver.archivedData(withRootObject: selectedLocation,
+                                                                requiringSecureCoding: false) else { return }
+        defaults.set(savedData, forKey: DataKey.selectedLocation.rawValue)
     }
 }
