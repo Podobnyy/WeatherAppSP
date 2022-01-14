@@ -13,12 +13,13 @@ final class LocationsViewController: BaseViewController {
     private let settingsManager = SettingsManager.shared
     private let networkManager = NetworkManager.shared
 
+    var addLocation: (() -> Void)?       // Coordinator
+    var locationSelected: (() -> Void)?  // Coordinator
+
     override func viewDidLoad() {
         super.viewDidLoad()
         startViewScreen(title: "Locations")
         setupNavigationController()
-
-        locationIsSelected()
 
         setupTableView()
         reloadListOfLocations()
@@ -71,30 +72,7 @@ final class LocationsViewController: BaseViewController {
 
     // MARK: - IBActions
     @IBAction private func clickAddButton() {
-        let storyboard = UIStoryboard(name: "AddLocationViewController", bundle: nil)
-        guard let addLocationVC: AddLocationViewController = storyboard.instantiateVC() else { return }
-
-        addLocationVC.delegate = self
-        let navigationController = UINavigationController(rootViewController: addLocationVC)
-        present(navigationController, animated: true)
-    }
-}
-
-// MARK: - Open WeatherViewController
-extension LocationsViewController {
-    
-    func locationIsSelected() {
-        if userDataManager.getSelectedLocation() != nil {
-            openLocationsViewController(animated: false)
-        }
-    }
-
-    func openLocationsViewController(animated: Bool) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        guard let tabBarController: TabBarController = storyboard.instantiateVC() else { return }
-
-        tabBarController.location = userDataManager.getSelectedLocation()
-        navigationController?.pushViewController(tabBarController, animated: animated)
+        addLocation?()
     }
 }
 
@@ -128,7 +106,7 @@ extension LocationsViewController: UITableViewDelegate {
     // MARK: - Navigation
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         userDataManager.setSelectedLocation(listOfLocations[indexPath.row])
-        openLocationsViewController(animated: true)
+        locationSelected?()
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }

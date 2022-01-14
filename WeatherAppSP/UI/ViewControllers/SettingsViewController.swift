@@ -26,6 +26,8 @@ final class SettingsViewController: BaseViewController {
 
     private let settingsManager = SettingsManager.shared
 
+    var selectSettings: (() -> Void)?   // Coordinator
+
     override func viewDidLoad() {
         super.viewDidLoad()
         startViewScreen(title: "Settings")
@@ -114,12 +116,7 @@ extension SettingsViewController: UITableViewDelegate {
         case .parameters:
             break
         case .details:
-            let settingDetailStoryboard =
-                UIStoryboard.init(name: String(describing: SettingDetailsViewController.self), bundle: nil)
-            let settingDetailViewController = settingDetailStoryboard.instantiateViewController(withIdentifier:
-                                                                String(describing: SettingDetailsViewController.self))
-
-            self.navigationController?.pushViewController(settingDetailViewController, animated: true)
+            selectSettings?()
             tableView.deselectRow(at: indexPath, animated: true)
         }
     }

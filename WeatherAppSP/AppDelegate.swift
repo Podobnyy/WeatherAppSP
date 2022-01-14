@@ -3,26 +3,27 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    var window: UIWindow?
+    var rootViewController: UINavigationController?
+
+    var applicationCoordinator: ApplicationCoordinator?
+
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        let navigationController = UINavigationController()
+        navigationController.navigationBar.isHidden = true
+        rootViewController = navigationController
+
+        let router = RouterImp(rootController: navigationController)
+        applicationCoordinator = ApplicationCoordinator(router: router)
+        applicationCoordinator?.start()
+
+        window = UIWindow.init(frame: UIScreen.main.bounds)
+        window?.rootViewController = navigationController
+        window?.makeKeyAndVisible()
+
         return true
     }
-
-    // MARK: UISceneSession Lifecycle
-
-    func application(_ application: UIApplication,
-                     configurationForConnecting connectingSceneSession: UISceneSession,
-                     options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
-    }
-
-    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-    }
-
-    func application(_ application: UIApplication,
-                     supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.portrait
-        }
 }
 
 // TODO: Name location on LocationModel - get from Apple -
