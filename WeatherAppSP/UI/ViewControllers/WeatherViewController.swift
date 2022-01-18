@@ -34,6 +34,8 @@ final class WeatherViewController: BaseViewController {
     private let userDataManager = UserDataManager.shared
     private let weatherDateFormatter = WeatherDateFormatter.shared
 
+    var onSelectLocationAction: (() -> Void)?
+
     var location: LocationModel?
 
     override func viewDidLoad() {
@@ -306,9 +308,7 @@ final class WeatherViewController: BaseViewController {
 
     @IBAction private func clickLocationButton() {
         userDataManager.setSelectedLocation(nil)
-        guard let tabBarController = tabBarController as? TabBarController else { return }
-
-        tabBarController.selectLocation?()
+        onSelectLocationAction?()
     }
 }
 

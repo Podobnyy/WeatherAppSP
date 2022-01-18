@@ -11,7 +11,6 @@ class BaseCoordinator: Coordinator {
     func start() { }
 
     func addDependency(_ coordinator: Coordinator) {
-        // add only unique object
         for element in childCoordinators where element === coordinator { return }
         childCoordinators.append(coordinator)
     }

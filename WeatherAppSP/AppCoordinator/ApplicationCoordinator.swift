@@ -21,7 +21,7 @@ final class ApplicationCoordinator: BaseCoordinator {
             self?.removeDependency(coordinator)
         }
 
-        coordinator.locationSelected = { [weak self] in
+        coordinator.onLocationSelectedAction = { [weak self] in
             self?.runWeatherFlow()
         }
 

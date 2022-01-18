@@ -13,8 +13,8 @@ final class LocationsViewController: BaseViewController {
     private let settingsManager = SettingsManager.shared
     private let networkManager = NetworkManager.shared
 
-    var addLocation: (() -> Void)?       // Coordinator
-    var locationSelected: (() -> Void)?  // Coordinator
+    var addLocation: (() -> Void)?
+    var locationSelected: (() -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()

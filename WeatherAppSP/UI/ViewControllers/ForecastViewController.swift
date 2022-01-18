@@ -38,7 +38,6 @@ final class ForecastViewController: BaseViewController {
 }
 
 // MARK: - UITableViewDataSource
-
 extension ForecastViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableViewDataSource.count

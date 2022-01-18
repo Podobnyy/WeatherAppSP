@@ -4,7 +4,7 @@ final class LocationCoordinator: BaseCoordinator {
 
     // MARK: - Properties
     private let router: Router
-    var locationSelected: (() -> Void)? // Coordinator
+    var onLocationSelectedAction: (() -> Void)?
 
     // MARK: - Init
     init(router: Router) {
@@ -25,7 +25,7 @@ final class LocationCoordinator: BaseCoordinator {
         }
 
         locationsViewController.locationSelected = { [weak self] in
-            self?.locationSelected?()
+            self?.onLocationSelectedAction?()
         }
 
         router.push(locationsViewController, animated: animated)

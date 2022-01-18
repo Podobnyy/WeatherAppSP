@@ -26,7 +26,7 @@ final class SettingsViewController: BaseViewController {
 
     private let settingsManager = SettingsManager.shared
 
-    var selectSettings: (() -> Void)?   // Coordinator
+    var selectSettings: (() -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -6,15 +6,13 @@ final class WeatherCoordinator: BaseCoordinator {
     private let router: Router
 
     private let settingsNavigationController = UINavigationController()
-    private let settingsRouter: Router
 
+    private var weatherViewController = WeatherViewController()
     private var tabBarController = TabBarController()
-    private let userDataManager = UserDataManager.shared
 
     // MARK: - Init
     init(router: Router) {
         self.router = router
-        settingsRouter = RouterImp(rootController: settingsNavigationController)
     }
 
     override func start() {
@@ -29,19 +27,23 @@ final class WeatherCoordinator: BaseCoordinator {
         guard let weatherViewController: WeatherViewController = storyboard.instantiateVC(),
               let forecastViewController: ForecastViewController = storyboard.instantiateVC() else { return }
 
+        self.weatherViewController = weatherViewController
+
         guard let tabBarController: TabBarController = storyboard.instantiateVC() else { return }
 
+        tabBarController.titleItems = [TabBarTitle.weather, TabBarTitle.forecastDays, TabBarTitle.settings]
         tabBarController.viewControllers = [weatherViewController, forecastViewController, settingsNavigationController]
         self.tabBarController = tabBarController
     }
 
+    // MARK: - Show and Run funcs
     private func showTabBarController() {
-        tabBarController.selectLocation = { [weak self] in
+        weatherViewController.onSelectLocationAction = { [weak self] in
             self?.router.popModule()
             self?.finishFlow?()
         }
 
-        tabBarController.selectSettings = { [weak self] in
+        tabBarController.onSelectSettingsAction = { [weak self] in
             self?.runSettingsFlow()
         }
 
@@ -49,12 +51,13 @@ final class WeatherCoordinator: BaseCoordinator {
     }
 
     private func runSettingsFlow() {
+        let settingsRouter = RouterImp(rootController: settingsNavigationController)
         let coordinator = SettingsCoordinator(router: settingsRouter)
         coordinator.finishFlow = { [weak self, weak coordinator] in
             self?.removeDependency(coordinator)
         }
 
-        tabBarController.settingsSelected = {
+        tabBarController.onSettingsSelectedAction = {
             coordinator.finishFlow?()
         }
 
