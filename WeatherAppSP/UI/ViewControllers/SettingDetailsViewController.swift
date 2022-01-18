@@ -72,7 +72,6 @@ extension SettingDetailsViewController: UITableViewDataSource {
         return cell
     }
 
-    // Move Cells
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
@@ -92,7 +91,6 @@ extension SettingDetailsViewController: UITableViewDelegate {
         return tableView.frame.size.width / TableCellViewConstants.tableViewCellHeightAspectRatio
     }
 
-    // Hide button"remove" cell
     func tableView(_ tableView: UITableView,
                    editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .none

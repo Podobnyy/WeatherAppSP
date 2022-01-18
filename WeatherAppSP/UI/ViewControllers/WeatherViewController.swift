@@ -34,22 +34,19 @@ final class WeatherViewController: BaseViewController {
     private let userDataManager = UserDataManager.shared
     private let weatherDateFormatter = WeatherDateFormatter.shared
 
+    var onSelectLocationAction: (() -> Void)?
+
     var location: LocationModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        getLocationFromTabBar()
+        location = userDataManager.getSelectedLocation()
+
         startViewScreen(title: "Weather")
         setupForecastCollectionView()
         addActivityIndicators()
         loadData()
-    }
-
-    private func getLocationFromTabBar() {
-        guard let tabbar: TabBarController = tabBarController as? TabBarController else { return }
-
-        location = tabbar.location
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -311,7 +308,7 @@ final class WeatherViewController: BaseViewController {
 
     @IBAction private func clickLocationButton() {
         userDataManager.setSelectedLocation(nil)
-        navigationController?.popViewController(animated: true)
+        onSelectLocationAction?()
     }
 }
 
