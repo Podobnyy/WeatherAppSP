@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         rootViewController = navigationController
 
         let router = RouterImp(rootController: navigationController)
-        applicationCoordinator = ApplicationCoordinator(router: router)
+        applicationCoordinator = ApplicationCoordinator(router: router, coordinatorFactory: CoordinatorFactoryImp())
         applicationCoordinator?.start()
 
         window = UIWindow.init(frame: UIScreen.main.bounds)

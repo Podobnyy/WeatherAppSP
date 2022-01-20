@@ -9,11 +9,9 @@ import Foundation
 
 final class WeatherDateFormatter {
 
-    static let shared = WeatherDateFormatter()
-
-    private init() {}
-
     let formatter = DateFormatter()
+
+    init() {}
 
     func getDayStringFromDate(date: Date) -> String {
         formatter.setLocalizedDateFormatFromTemplate("EEEE")

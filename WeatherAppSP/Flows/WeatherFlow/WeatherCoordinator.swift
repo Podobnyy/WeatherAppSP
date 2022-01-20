@@ -4,6 +4,8 @@ final class WeatherCoordinator: BaseCoordinator {
 
     // MARK: - Properties
     private let router: Router
+    private let moduleFactory: WeatherModuleFactory
+    private let coordinatorFactory: CoordinatorFactory
 
     private let settingsNavigationController = UINavigationController()
 
@@ -11,8 +13,10 @@ final class WeatherCoordinator: BaseCoordinator {
     private var tabBarController = TabBarController()
 
     // MARK: - Init
-    init(router: Router) {
+    init(router: Router, moduleFactory: WeatherModuleFactory, coordinatorFactory: CoordinatorFactory) {
         self.router = router
+        self.moduleFactory = moduleFactory
+        self.coordinatorFactory = coordinatorFactory
     }
 
     override func start() {
@@ -22,14 +26,21 @@ final class WeatherCoordinator: BaseCoordinator {
 
     // MARK: - Private funcs
     private func setupTabBarController() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-
-        guard let weatherViewController: WeatherViewController = storyboard.instantiateVC(),
-              let forecastViewController: ForecastViewController = storyboard.instantiateVC() else { return }
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//
+//        guard let weatherViewController: WeatherViewController = storyboard.instantiateVC(),
+//              let forecastViewController: ForecastViewController = storyboard.instantiateVC() else { return }
+        // TODO: delete UP
+//        ModuleFactoryImp.makeWeatherVC()
+//        ModuleFactoryImp.makeForecastVC()
+        guard let weatherViewController: WeatherViewController = moduleFactory.makeWeatherVC(),
+              let forecastViewController: ForecastViewController = moduleFactory.makeForecastVC() else { return }
 
         self.weatherViewController = weatherViewController
 
-        guard let tabBarController: TabBarController = storyboard.instantiateVC() else { return }
+//        guard let tabBarController: TabBarController = storyboard.instantiateVC() else { return }
+        // TODO: delete UP
+        guard let tabBarController = moduleFactory.makeTabBarController() else { return }
 
         tabBarController.titleItems = [TabBarTitle.weather, TabBarTitle.forecastDays, TabBarTitle.settings]
         tabBarController.viewControllers = [weatherViewController, forecastViewController, settingsNavigationController]
@@ -52,7 +63,11 @@ final class WeatherCoordinator: BaseCoordinator {
 
     private func runSettingsFlow() {
         let settingsRouter = RouterImp(rootController: settingsNavigationController)
-        let coordinator = SettingsCoordinator(router: settingsRouter)
+//        let coordinator = SettingsCoordinator(router: settingsRouter)
+        // TODO: delete UP
+//        coordinatorFactory.makeSettingsCoordinator
+        let coordinator = coordinatorFactory.makeSettingsCoordinator(router: settingsRouter)
+
         coordinator.finishFlow = { [weak self, weak coordinator] in
             self?.removeDependency(coordinator)
         }

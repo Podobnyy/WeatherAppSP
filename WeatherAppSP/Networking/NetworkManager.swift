@@ -13,9 +13,7 @@ final class NetworkManager {
     private let session = URLSession.shared
     private let decoder = JSONDecoder()
 
-    static let shared = NetworkManager()
-
-    private init() {}
+    init() {}
 
     // MARK: - Call Current Weather Request
     func callCurrentWeatherRequest(location: LocationModel, completion: @escaping CurrentWeatherLoadComplitionalBlock) {

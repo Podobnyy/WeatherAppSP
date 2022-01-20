@@ -24,10 +24,6 @@ enum Distance: String, CaseIterable {
 
 final class SettingsManager: NSObject, NSCoding {
 
-    static let shared = SettingsManager()
-
-    private override init() {}
-
     private let converterManager = СonverterManager.shared
 
     private var valueHour = Hour.twentyFour
@@ -42,6 +38,8 @@ final class SettingsManager: NSObject, NSCoding {
                                   SettingDetailsModel(detailParameter: Detail.pressure, isOn: true)]
 
     private let userDefaults = UserSettings.shared
+
+    override init() {}
 
     // MARK: - NSCoding
     func encode(with coder: NSCoder) {

@@ -9,9 +9,7 @@ import UIKit
 
 struct LabelFormatter {
 
-    static let shared = LabelFormatter()
-
-    private init() {}
+    init() {}
 
     // MARK: - func
     func setupLabelSizeFont(label: UILabel) {

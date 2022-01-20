@@ -16,12 +16,10 @@ enum SettingsKey: String {
 
 final class UserSettings {
 
-    static let shared = UserSettings()
-
-    private init() {}
-
     private let defaults = UserDefaults.standard
 
+    init() {}
+    
     // MARK: - Read from UserDefaults
     func getValueHour() -> Hour? {
         guard let savedData = defaults.object(forKey: SettingsKey.valueHour.rawValue) as? Data, let decodedModel =

@@ -73,9 +73,7 @@ struct ImageWeather {
                "broken clouds": "04d",
                "overcast clouds": "04d"]
 
-    static let shared = ImageWeather()
-
-    private init() {}
+    init() {}
 
     // MARK: - func
     func getImageWeather(weatherDescriptionString: String) -> UIImage {

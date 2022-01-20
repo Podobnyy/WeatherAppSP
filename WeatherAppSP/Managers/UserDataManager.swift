@@ -8,11 +8,9 @@ enum DataKey: String {
 
 final class UserDataManager {
 
-    static let shared = UserDataManager()
-
-    private init() {}
-
     private let defaults = UserDefaults.standard
+
+    init() {}
 
     // MARK: - Read from UserDefaults
     func getForecastDaysFromUserDefaults() -> [ForecastDayModel]? {

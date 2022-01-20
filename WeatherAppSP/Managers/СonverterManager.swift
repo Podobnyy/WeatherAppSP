@@ -9,11 +9,9 @@ import Foundation
 
 final class СonverterManager {
 
-    static let shared = СonverterManager()
-
     private let weatherDateFormatter = WeatherDateFormatter.shared
 
-    private init() {}
+    init() {}
 
     func getTwelveHourFromTwentyFourHour(_ twentyFourHour: Int) -> String {
         var result = ""
