@@ -6,9 +6,9 @@ final class ForecastViewController: BaseViewController {
 
     private var tableViewDataSource = [ForecastDayModel]()
 
-    private let settingsManager = SettingsManager.shared
-    private let userDataManager = UserDataManager.shared
-    private let imageWeather = ImageWeather.shared
+    var settingsManager: SettingsManager!
+    var userDataManager: UserDataManager!
+    var imageWeather: ImageWeather!
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -1,16 +1,19 @@
 final class CoordinatorFactoryImp: CoordinatorFactory {
 
-    func makeLocationCoordinator(router: Router) -> LocationCoordinator {
-        return LocationCoordinator(router: router, moduleFactory: ModuleFactoryImp())
+    func makeLocationCoordinator(router: Router, moduleFactory: ModuleFactoryImp) -> LocationCoordinator {
+        return LocationCoordinator(router: router, moduleFactory: moduleFactory)
     }
 
-    func makeWeatherCoordinator(router: Router, coordinatorFactory: CoordinatorFactory) -> WeatherCoordinator {
+    func makeWeatherCoordinator(router: Router,
+                                moduleFactory: ModuleFactoryImp,
+                                coordinatorFactory: CoordinatorFactory) -> WeatherCoordinator {
+
         return WeatherCoordinator(router: router,
-                                  moduleFactory: ModuleFactoryImp(),
+                                  moduleFactory: moduleFactory,
                                   coordinatorFactory: coordinatorFactory)
     }
 
-    func makeSettingsCoordinator(router: Router) -> SettingsCoordinator {
-        return SettingsCoordinator(router: router, moduleFactory: ModuleFactoryImp())
+    func makeSettingsCoordinator(router: Router, moduleFactory: ModuleFactoryImp) -> SettingsCoordinator {
+        return SettingsCoordinator(router: router, moduleFactory: moduleFactory)
     }
 }

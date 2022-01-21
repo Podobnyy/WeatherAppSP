@@ -1,12 +1,17 @@
 final class ApplicationCoordinator: BaseCoordinator {
 
+    private let applicationFactory: ApplicationFactoryImp
     private let router: Router
     private let coordinatorFactory: CoordinatorFactory
-    private let userDataManager = UserDataManager.shared
 
-    init(router: Router, coordinatorFactory: CoordinatorFactory) {
+    private let userDataManager: UserDataManager
+
+    init(applicationFactory: ApplicationFactoryImp, router: Router) {
+        self.applicationFactory = applicationFactory
         self.router = router
-        self.coordinatorFactory = coordinatorFactory
+
+        coordinatorFactory = applicationFactory.getCoordinatorFactory()
+        userDataManager = applicationFactory.getModuleFactory().serviceFactory.userDataManager
     }
 
     override func start() {
@@ -18,10 +23,10 @@ final class ApplicationCoordinator: BaseCoordinator {
     }
 
     private func runLocationsFlow() {
-//        let coordinator = LocationCoordinator(router: router)
-        // TODO: delete UP
-//      coordinatorFactory.makeLocationCoordinator
-        let coordinator = coordinatorFactory.makeLocationCoordinator(router: router)
+        let coordinator = coordinatorFactory.makeLocationCoordinator(
+            router: router,
+            moduleFactory: applicationFactory.getModuleFactory()
+        )
 
         coordinator.finishFlow = { [weak self, weak coordinator] in
             self?.removeDependency(coordinator)
@@ -36,11 +41,11 @@ final class ApplicationCoordinator: BaseCoordinator {
     }
 
     private func runWeatherFlow() {
-//        let coordinator = WeatherCoordinator(router: router)
-        // TODO: delete UP
-//        coordinatorFactory.makeWeatherCoordinator
-        let coordinator = coordinatorFactory.makeWeatherCoordinator(router: router,
-                                                                    coordinatorFactory: coordinatorFactory)
+        let coordinator = coordinatorFactory.makeWeatherCoordinator(
+            router: router,
+            moduleFactory: applicationFactory.getModuleFactory(),
+            coordinatorFactory: coordinatorFactory
+        )
 
         coordinator.finishFlow = { [weak self, weak coordinator] in
             self?.removeDependency(coordinator)

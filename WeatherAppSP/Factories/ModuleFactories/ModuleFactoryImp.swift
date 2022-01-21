@@ -1,6 +1,6 @@
 import UIKit
 
-final class ModuleFactoryImp { // TODO: maybe shorted?
+final class ModuleFactoryImp {
 
     var serviceFactory = ServiceFactoryImp()
 }
@@ -11,6 +11,9 @@ extension ModuleFactoryImp: LocationModuleFactory {
         let storyboard = UIStoryboard.init(name: String(describing: LocationsViewController.self), bundle: nil)
         guard let locationsVC: LocationsViewController = storyboard.instantiateVC() else { return nil}
 
+        locationsVC.networkManager = serviceFactory.networkManager
+        locationsVC.settingsManager = serviceFactory.settingsManager
+        locationsVC.userDataManager = serviceFactory.userDataManager
         return locationsVC
     }
 
@@ -28,6 +31,12 @@ extension ModuleFactoryImp: WeatherModuleFactory {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let weatherVC: WeatherViewController = storyboard.instantiateVC() else { return nil }
 
+        weatherVC.networkManager = serviceFactory.networkManager
+        weatherVC.settingsManager = serviceFactory.settingsManager
+        weatherVC.userDataManager = serviceFactory.userDataManager
+        weatherVC.imageWeather = serviceFactory.imageWeather
+        weatherVC.weatherDateFormatter = serviceFactory.weatherDateFormatter
+        weatherVC.labelFormatter = serviceFactory.labelFormatter
         return weatherVC
     }
 
@@ -35,6 +44,9 @@ extension ModuleFactoryImp: WeatherModuleFactory {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let forecastVC: ForecastViewController = storyboard.instantiateVC() else { return nil }
 
+        forecastVC.settingsManager = serviceFactory.settingsManager
+        forecastVC.userDataManager = serviceFactory.userDataManager
+        forecastVC.imageWeather = serviceFactory.imageWeather
         return forecastVC
     }
 
@@ -52,6 +64,8 @@ extension ModuleFactoryImp: SettingsModuleFactory {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let settingsVC: SettingsViewController = storyboard.instantiateVC() else { return nil}
 
+        settingsVC.settingsManager = serviceFactory.settingsManager
+        settingsVC.labelFormatter = serviceFactory.labelFormatter
         return settingsVC
     }
 
@@ -59,6 +73,7 @@ extension ModuleFactoryImp: SettingsModuleFactory {
         let storyboard = UIStoryboard.init(name: String(describing: SettingDetailsViewController.self), bundle: nil)
         guard let settingDetailVC: SettingDetailsViewController = storyboard.instantiateVC() else { return nil }
 
+        settingDetailVC.settingsManager = serviceFactory.settingsManager
         return settingDetailVC
     }
 }

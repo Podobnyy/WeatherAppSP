@@ -1,10 +1,3 @@
-//
-//  ImageWeather.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 02.12.2021.
-//
-
 import UIKit
 
 struct ImageWeather {

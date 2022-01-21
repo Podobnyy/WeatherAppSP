@@ -8,7 +8,7 @@ final class SettingDetailsViewController: BaseViewController {
 
     private var tableViewDataSource = [SettingDetailsModel]()
 
-    private let settingsManager = SettingsManager.shared
+    var settingsManager: SettingsManager!
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -1,10 +1,3 @@
-//
-//  UserSettings.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 15.12.2021.
-//
-
 import Foundation
 
 enum SettingsKey: String {
@@ -19,7 +12,7 @@ final class UserSettings {
     private let defaults = UserDefaults.standard
 
     init() {}
-    
+
     // MARK: - Read from UserDefaults
     func getValueHour() -> Hour? {
         guard let savedData = defaults.object(forKey: SettingsKey.valueHour.rawValue) as? Data, let decodedModel =

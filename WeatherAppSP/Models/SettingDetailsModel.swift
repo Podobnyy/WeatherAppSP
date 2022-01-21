@@ -1,10 +1,3 @@
-//
-//  WeatherDetailsModel.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 13.12.2021.
-//
-
 import Foundation
 
 enum Detail: String, CaseIterable {

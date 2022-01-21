@@ -1,10 +1,3 @@
-//
-//  ForecastDayModel.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 20.12.2021.
-//
-
 import Foundation
 
 enum ForecastDayKey: String {
