@@ -6,6 +6,8 @@ final class LocationCoordinator: BaseCoordinator {
     private let router: Router
     private let moduleFactory: LocationModuleFactory
 
+    private var locationsViewController: LocationsViewController?
+
     var onLocationSelectedAction: (() -> Void)?
 
     // MARK: - Init
@@ -22,6 +24,8 @@ final class LocationCoordinator: BaseCoordinator {
     private func showLocationVC(animated: Bool) {
         guard let locationsViewController: LocationsViewController = moduleFactory.makeLocationVC() else { return }
 
+        self.locationsViewController = locationsViewController
+
         locationsViewController.addLocation = { [weak self] in
             self?.showAddLocationVC()
         }
@@ -36,6 +40,7 @@ final class LocationCoordinator: BaseCoordinator {
     private func showAddLocationVC() {
         guard let addLocationVC: AddLocationViewController = moduleFactory.makeAddLocationVC()  else { return }
 
+        addLocationVC.delegate = locationsViewController
         let navigationController = UINavigationController(rootViewController: addLocationVC)
         router.present(navigationController, animated: true)
     }
