@@ -1,10 +1,3 @@
-//
-//  ForecastDayTableViewCell.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 20.12.2021.
-//
-
 import UIKit
 
 final class ForecastDayTableViewCell: UITableViewCell {

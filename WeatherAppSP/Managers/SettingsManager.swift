@@ -1,10 +1,3 @@
-//
-//  SettingsManager.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 08.12.2021.
-//
-
 import Foundation
 
 enum Hour: String, CaseIterable {
@@ -24,12 +17,6 @@ enum Distance: String, CaseIterable {
 
 final class SettingsManager: NSObject, NSCoding {
 
-    static let shared = SettingsManager()
-
-    private override init() {}
-
-    private let converterManager = СonverterManager.shared
-
     private var valueHour = Hour.twentyFour
     private var valueUnit = Unit.celsius
     private var valueDistance = Distance.kilometre
@@ -41,7 +28,15 @@ final class SettingsManager: NSObject, NSCoding {
                                   SettingDetailsModel(detailParameter: Detail.feelsLike, isOn: true),
                                   SettingDetailsModel(detailParameter: Detail.pressure, isOn: true)]
 
-    private let userDefaults = UserSettings.shared
+    private var userSettings: UserSettings!
+    private var converterManager: СonverterManager!
+
+    override init() {}
+
+    init(userSettings: UserSettings, converterManager: СonverterManager) {
+        self.userSettings = userSettings
+        self.converterManager = converterManager
+    }
 
     // MARK: - NSCoding
     func encode(with coder: NSCoder) {
@@ -91,39 +86,39 @@ final class SettingsManager: NSObject, NSCoding {
 
     // MARK: - GET funcs
     func getValueHour() -> Hour {
-        return userDefaults.getValueHour() ?? valueHour
+        return userSettings.getValueHour() ?? valueHour
     }
 
     func getValueUnit() -> Unit {
-        return userDefaults.getValueUnit() ?? valueUnit
+        return userSettings.getValueUnit() ?? valueUnit
     }
 
     func getValueDistance() -> Distance {
-        return userDefaults.getValueDistance() ?? valueDistance
+        return userSettings.getValueDistance() ?? valueDistance
     }
 
     func getSettingDetails() -> [SettingDetailsModel] {
-        return userDefaults.getSettingDetails() ?? settingDetails
+        return userSettings.getSettingDetails() ?? settingDetails
     }
 
     // MARK: - SET funcs
     func setValueHour(newValue: Hour) {
         valueHour = newValue
-        userDefaults.saveValueHour(newValue: newValue)
+        userSettings.saveValueHour(newValue: newValue)
     }
 
     func setValueUnit(newValue: Unit) {
         valueUnit = newValue
-        userDefaults.saveValueUnit(newValue: newValue)
+        userSettings.saveValueUnit(newValue: newValue)
     }
 
     func setValueDistance(newValue: Distance) {
         valueDistance = newValue
-        userDefaults.saveValueDistance(newValue: newValue)
+        userSettings.saveValueDistance(newValue: newValue)
     }
 
     func setSettingDetails(newSettingDetails: [SettingDetailsModel]) {
         settingDetails = newSettingDetails
-        userDefaults.saveSettingDetails(newSettingDetails: newSettingDetails)
+        userSettings.saveSettingDetails(newSettingDetails: newSettingDetails)
     }
 }

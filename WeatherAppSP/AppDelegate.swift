@@ -7,6 +7,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var rootViewController: UINavigationController?
 
     var applicationCoordinator: ApplicationCoordinator?
+    let applicationFactory = ApplicationFactoryImp()
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -15,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         rootViewController = navigationController
 
         let router = RouterImp(rootController: navigationController)
-        applicationCoordinator = ApplicationCoordinator(router: router)
+        applicationCoordinator = ApplicationCoordinator(applicationFactory: applicationFactory, router: router)
         applicationCoordinator?.start()
 
         window = UIWindow.init(frame: UIScreen.main.bounds)

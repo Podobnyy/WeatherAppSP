@@ -1,10 +1,3 @@
-//
-//  SettingDetailTableViewCell.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 13.12.2021.
-//
-
 import UIKit
 
 protocol SettingDetailTableViewCellDelegate: AnyObject {

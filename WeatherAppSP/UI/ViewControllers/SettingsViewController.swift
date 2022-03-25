@@ -24,7 +24,8 @@ final class SettingsViewController: BaseViewController {
     private let unitArray = Unit.allCases
     private let distanceArray = Distance.allCases
 
-    private let settingsManager = SettingsManager.shared
+    var settingsManager: SettingsManager!
+    var labelFormatter: LabelFormatter!
 
     var selectSettings: (() -> Void)?
 
@@ -93,6 +94,7 @@ extension SettingsViewController: UITableViewDataSource {
         switch tableViewDataSource[indexPath.section] {
         case .parameters:
             let cell: SettingsTableViewCell = tableView.dequeueReusableCell(for: indexPath)
+            cell.labelFormatter = self.labelFormatter
             cell.setup(settingModel: parametersDataSource[indexPath.row])
             cell.delegate = self
             return cell

@@ -8,10 +8,9 @@ final class LocationsViewController: BaseViewController {
     private var listOfLocations = [LocationModel]()
     private var tableViewDataSource = [CurrentWeatherModel]()
 
-    private let userDataManager = UserDataManager.shared
-    private let imageWeather = ImageWeather.shared
-    private let settingsManager = SettingsManager.shared
-    private let networkManager = NetworkManager.shared
+    var networkManager: NetworkManager!
+    var settingsManager: SettingsManager!
+    var userDataManager: UserDataManager!
 
     var addLocation: (() -> Void)?
     var locationSelected: (() -> Void)?

@@ -1,10 +1,3 @@
-//
-//  ResponseModel.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 24.11.2021.
-//
-
 import Foundation
 
 struct ResponseModel: Codable {

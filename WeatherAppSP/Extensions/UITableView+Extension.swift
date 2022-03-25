@@ -1,10 +1,3 @@
-//
-//  UITableView+Extension.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 07.12.2021.
-//
-
 import UIKit
 
 // MARK: - Generics for UITableViewCell

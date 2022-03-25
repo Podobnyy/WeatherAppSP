@@ -1,10 +1,3 @@
-//
-//  SettingsTableViewCell.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 07.12.2021.
-//
-
 import UIKit
 
 protocol SettingsTableViewCellDelegate: AnyObject {
@@ -18,10 +11,12 @@ final class SettingsTableViewCell: UITableViewCell {
     @IBOutlet private weak var nameParameterLabel: UILabel!
     @IBOutlet private weak var valueSegmentedControl: UISegmentedControl!
 
+    var labelFormatter: LabelFormatter!
+
     // MARK: - funcs
     func setup(settingModel: SettingsModel) {
         nameParameterLabel.text = settingModel.parameter
-        LabelFormatter.shared.setupLabelSizeFont(label: nameParameterLabel)
+        labelFormatter.setupLabelSizeFont(label: nameParameterLabel)
 
         settingModel.values.enumerated().forEach {
             valueSegmentedControl.setAction(UIAction.init(title: $1,

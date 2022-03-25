@@ -1,10 +1,3 @@
-//
-//  ForecastViewModel.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 06.12.2021.
-//
-
 import UIKit
 
 struct ForecastViewModel {
@@ -13,10 +6,9 @@ struct ForecastViewModel {
     var temp: String
     let weatherDescription: UIImage
 
-    init(forecast: Forecast) {
-        time = WeatherDateFormatter.shared.getHourStringFromDate(date: forecast.time)
+    init(forecast: Forecast, imageWeather: ImageWeather, weatherDateFormatter: WeatherDateFormatter) {
+        time = weatherDateFormatter.getHourStringFromDate(date: forecast.time)
         temp = "\(forecast.temp)°"
-        weatherDescription = ImageWeather.shared
-            .getImageWeather(weatherDescriptionString: forecast.weatherDescription)
+        weatherDescription = imageWeather.getImageWeather(weatherDescriptionString: forecast.weatherDescription)
     }
 }

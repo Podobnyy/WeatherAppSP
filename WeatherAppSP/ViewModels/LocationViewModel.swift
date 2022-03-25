@@ -1,10 +1,3 @@
-//
-//  LocationViewModel.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 21.12.2021.
-//
-
 import UIKit
 
 struct LocationViewModel {

@@ -30,9 +30,12 @@ final class WeatherViewController: BaseViewController {
     private let aspectRatioToView: CGFloat = 8
     private let heightCellLessCollection = 0.5
 
-    private let settingsManager = SettingsManager.shared
-    private let userDataManager = UserDataManager.shared
-    private let weatherDateFormatter = WeatherDateFormatter.shared
+    var networkManager: NetworkManager!
+    var settingsManager: SettingsManager!
+    var userDataManager: UserDataManager!
+    var imageWeather: ImageWeather!
+    var weatherDateFormatter: WeatherDateFormatter!
+    var labelFormatter: LabelFormatter!
 
     var onSelectLocationAction: (() -> Void)?
 
@@ -145,7 +148,7 @@ final class WeatherViewController: BaseViewController {
 
         guard let location = location else { return }
 
-        NetworkManager.shared.callForecastLocationWeatherRequest(location: location) { [weak self] (cityWeather) in
+       networkManager.callForecastLocationWeatherRequest(location: location) { [weak self] (cityWeather) in
             guard let cityWeather = cityWeather else { return }
 
             DispatchQueue.main.async {
@@ -167,14 +170,14 @@ final class WeatherViewController: BaseViewController {
     // MARK: - func for TopStackView
     private func setupUpperStackView(cityWeather: CityWeather) {
         nameLabel.text = cityWeather.name
-        weatherDescriptionImage.image = ImageWeather.shared
-            .getImageWeather(weatherDescriptionString: cityWeather.weatherDescription)
+        weatherDescriptionImage.image = imageWeather.getImageWeather(weatherDescriptionString:
+                                                                        cityWeather.weatherDescription)
         weatherDescriptionLabel.text = cityWeather.weatherDescription
         dateLabel.text = weatherDateFormatter.getDateStringFromDate(date: cityWeather.date)
         reloadDataFromUpperStackView(cityWeather: cityWeather)
 
         [nameLabel, weatherDescriptionLabel, dateLabel, tempLabel].forEach {
-            LabelFormatter.shared.setupLabelSizeFont(label: $0)
+            labelFormatter.setupLabelSizeFont(label: $0)
         }
     }
 
@@ -235,7 +238,7 @@ final class WeatherViewController: BaseViewController {
             let valueParameter = getValueParameterByName(nameParameter: nameParameter, cityWeather: cityWeather)
 
             let detailItem = WeatherDetailItem.init(name: nameParameter, value: valueParameter)
-            let detailModel = WeatherDetailViewModel.init(weatherDetailItem: detailItem)
+            let detailModel = WeatherDetailViewModel.init(weatherDetailItem: detailItem, imageWeather: imageWeather)
             let view = getWeatherDetailView(weatherDetailViewModel: detailModel)
             addWeatherDetailViewOnStackView(view: view, index: $0)
         }
@@ -272,6 +275,7 @@ final class WeatherViewController: BaseViewController {
 
     private func getWeatherDetailView(weatherDetailViewModel: WeatherDetailViewModel) -> WeatherDetailView {
         let detailView = WeatherDetailView.fromNib(named: String(describing: WeatherDetailView.self))
+        detailView.labelFormatter = self.labelFormatter
         detailView.setup(weatherDetailViewModel: weatherDetailViewModel)
 
         let heightForView = view.frame.size.height / aspectRatioToView
@@ -327,10 +331,14 @@ extension WeatherViewController: UICollectionViewDataSource {
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: ForecastCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
 
-        var forecastViewModel = ForecastViewModel(forecast: forecastDataSource[indexPath.row])
+        var forecastViewModel = ForecastViewModel(forecast: forecastDataSource[indexPath.row],
+                                                  imageWeather: imageWeather,
+                                                  weatherDateFormatter: weatherDateFormatter)
+
         forecastViewModel.time = settingsManager.getHourSelectedFormat(hourTwentyFour: forecastViewModel.time)
         forecastViewModel.temp = settingsManager.getUnitSelectedFormat(celsius: forecastDataSource[indexPath.row].temp)
 
+        cell.labelFormatter = self.labelFormatter
         cell.setup(forecastViewModel: forecastViewModel)
         return cell
     }

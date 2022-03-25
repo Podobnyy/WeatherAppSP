@@ -1,10 +1,3 @@
-//
-//  ForecastDayViewModel.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 20.12.2021.
-//
-
 import UIKit
 
 struct ForecastDayViewModel {

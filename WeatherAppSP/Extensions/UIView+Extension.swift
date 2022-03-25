@@ -1,10 +1,3 @@
-//
-//  UIView+Extension.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 06.12.2021.
-//
-
 import UIKit
 
 extension UIView {

@@ -1,10 +1,3 @@
-//
-//  WeatherDetailViewModel.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 06.12.2021.
-//
-
 import UIKit
 
 struct WeatherDetailViewModel {
@@ -13,9 +6,9 @@ struct WeatherDetailViewModel {
     let value: String
     let image: UIImage
 
-    init(weatherDetailItem: WeatherDetailItem) {
+    init(weatherDetailItem: WeatherDetailItem, imageWeather: ImageWeather) {
         name = weatherDetailItem.name
         value = "\(weatherDetailItem.value)"
-        image = ImageWeather.shared.getImageDetail(detailString: weatherDetailItem.name)
+        image = imageWeather.getImageDetail(detailString: weatherDetailItem.name)
     }
 }

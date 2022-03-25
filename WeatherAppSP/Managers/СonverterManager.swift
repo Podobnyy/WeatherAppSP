@@ -1,19 +1,6 @@
-//
-//  СonverterManager.swift
-//  WeatherAppSP
-//
-//  Created by Сергей Александрович on 09.12.2021.
-//
-
 import Foundation
 
 final class СonverterManager {
-
-    static let shared = СonverterManager()
-
-    private let weatherDateFormatter = WeatherDateFormatter.shared
-
-    private init() {}
 
     func getTwelveHourFromTwentyFourHour(_ twentyFourHour: Int) -> String {
         var result = ""
